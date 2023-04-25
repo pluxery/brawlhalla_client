@@ -1,0 +1,29 @@
+.post__wrapper {
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid black;
+    display: flex;
+
+}
+
+.post__img_wrapper{
+    display: flex;
+    flex-direction: column;
+    margin-right: 30px;
+
+}
+.post__text_wrapper{
+    display: flex;
+    flex-direction: column;
+}
+
+.post__content{
+
+    padding-top: 15px;
+
+}
+
+.post__title{
+    display: flex;
+    flex-direction: column;
+}
