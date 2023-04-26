@@ -6,7 +6,7 @@ const LegendItem = () => {
             <div className={'legend__img_wrapper'}>
                 <img src={''} alt={'avatar'}/>
             </div>
-            <p>name</p>
+            <p>full name</p>
         </div>
     );
 };
