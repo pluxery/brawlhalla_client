@@ -1,6 +1,7 @@
 import React from 'react';
 import BhButton from "../../components/UI/button/BhButton";
 import BhInput from "../../components/UI/input/BhInput";
+import BhSelect from "../../components/UI/BhSelect/BhSelect";
 
 const CreatePost = () => {
     return (
@@ -9,12 +10,12 @@ const CreatePost = () => {
                <BhInput name={'title'} placeholder={'title'} type={'text'}/>
                <BhInput name={'text'} placeholder={'text'}/>
 
-               <select name={'category'}>
+               <BhSelect name={'category'}>
                    <option>category 1</option>
                    <option>category 2</option>
                    <option>category 3</option>
                    <option>new category</option>
-               </select>
+               </BhSelect>
 
                <BhInput placeholder={'#tags'}/>
 
