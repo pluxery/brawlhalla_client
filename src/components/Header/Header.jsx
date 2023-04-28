@@ -10,13 +10,14 @@ const Header = () => {
                 <BhLink to={'/news'}>Новости</BhLink>
                 <BhLink to={'/legends'}>Легенды</BhLink>
                 <BhLink to={'/weapons'}>Оружия</BhLink>
-                <a className={'link'} href={'https://www.brawlhalla.com/glory-calculator/'}>Калькулятор</a>
+                {/*<a className={'link'} href={'https://www.brawlhalla.com/glory-calculator/'}>Калькулятор</a>*/}
                 <BhLink to={'/about'}>О Проекте</BhLink>
             </div>
 
             <div>
                 <BhLink to={'/login'}>Войти</BhLink>
                 <BhLink to={'/register'}>Регистрация</BhLink>
+                <BhLink to={'/profile'}>Профиль</BhLink>
             </div>
         </div>
     );

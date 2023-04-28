@@ -1,8 +1,8 @@
 import React from 'react';
 import PostItem from "../components/PostItem/PostItem";
-import '../styles/Posts.css'
+import NewsItem from "../components/NewsItem/NewsItem";
 
-const Posts = () => {
+const News = () => {
     let post = {
         image: "image",
         title: "title",
@@ -12,19 +12,17 @@ const Posts = () => {
     }//это не работает пока пох
     return (
         <>
-            <h1>Последние:</h1>
-
+            <h1>Новости:</h1>
             <div className={'posts__wrapper'}>
-                <PostItem post={post}/>
-                <PostItem post={post}/>
-                <PostItem post={post}/>
-                <PostItem post={post}/>
-                <PostItem post={post}/>
-                <PostItem post={post}/>
+                <NewsItem post={post}/>
+                <NewsItem post={post}/>
+                <NewsItem post={post}/>
+                <NewsItem post={post}/>
+                <NewsItem post={post}/>
+                <NewsItem post={post}/>
             </div>
         </>
     );
-
 };
 
-export default Posts;
+export default News;

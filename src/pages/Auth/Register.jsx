@@ -1,6 +1,6 @@
 import React from 'react';
-import BhInput from "../components/UI/input/BhInput";
-import BhButton from "../components/UI/button/BhButton";
+import BhInput from "../../components/UI/input/BhInput";
+import BhButton from "../../components/UI/button/BhButton";
 
 const Register = () => {
     return (
