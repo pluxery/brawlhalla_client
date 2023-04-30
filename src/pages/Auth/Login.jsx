@@ -8,11 +8,14 @@ import '../../styles/Login.css';
 const Login = () => {
     return (
 
-        <div className={'main'}>
+        <div className={''}>
             <form>
-                <BhInput type={"text"} placeholder={'email'}></BhInput>
+                <h1 className="start__text">С возвращением!</h1>
+                <BhInput type={"text"} placeholder={'login'}></BhInput>
                 <BhInput type={"password"} placeholder={'password'}></BhInput>
+                <div className="login__button">
                 <BhButton>Войти</BhButton>
+                </div>
             </form>
         </div>
     );

@@ -1,4 +1,20 @@
 .main{
+    width:350px;
+}
+.start__text{
+    color: rgb(248, 245, 241);
+    text-shadow: 1px 1px 2px #141c3d;
+    display: compact;
+    padding: 0.3em 0.6em ;
+    font-size: 34px;
+}
 
+.login__button{
+    display: flex;
+    flex-direction: column;
+}
+
+.login__form{
+    padding: 30px;
 
 }

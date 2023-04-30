@@ -1,8 +1,26 @@
 .Input{
-    padding: 5px 15px;
-    margin: 5px 0;
+    padding: 10px 20px 10px;
+    margin: 10px 0;
     display: flex;
     flex-direction: column;
-    border-radius: 10px;
-    border: mediumseagreen 1px solid;
+    border: none;
+    border-bottom: #fff7f7 3px solid;
+    width:100%;
+    background:none;
+    color: white;
+    font-size:20px;
+    font-family: "Calibri Light";
+}
+
+.Input:focus{
+    background: rgba(139, 224, 139, 0.9);
+    border: none;
+    border-radius: 15px;
+    outline: none;
+    color: #ffffff;
+}
+
+.Input::placeholder{
+    color: rgba(255, 255, 255, 0.9);
+    font-family: "Calibri Light";
 }
