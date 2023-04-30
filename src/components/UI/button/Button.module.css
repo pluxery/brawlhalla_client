@@ -1,7 +1,9 @@
 .Button{
-    padding: 5px;
+    padding: 10px 30px;
     border-radius: 5px;
-    border: solid 1px black;
-    background-color: aliceblue ;
-    color: black;
+    border: solid 2px #f8f5f1;
+    background-color: rgba(114, 183, 114, 0.9);
+    color: #ffffff;
+    margin-top: 20px;
 }
+

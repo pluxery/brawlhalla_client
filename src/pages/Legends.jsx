@@ -4,11 +4,9 @@ import '../styles/Legends.css'
 
 const Legends = () => {
     return (<>
-            <h1>Legends:</h1>
+            <h1 style={{textAlign: "center"}}>Legends:</h1>
             <div className={"legends__wrapper"}>
-                {Array(50).fill(1).map(() => {
-                    return <LegendItem/>;
-                })}
+                     <LegendItem/>
             </div>
         </>
     );
