@@ -2,7 +2,7 @@ import React from 'react';
 import BhInput from "../../components/UI/input/BhInput";
 import BhButton from "../../components/UI/button/BhButton";
 import '../../styles/EditPost.css'
-import BhSelect from "../../components/UI/BhSelect/BhSelect";
+import BhSelect from "../../components/UI/select/BhSelect";
 const EditPost = () => {
     return (
         <div>

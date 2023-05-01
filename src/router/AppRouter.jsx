@@ -10,6 +10,8 @@ import CreatePost from "../pages/Post/CreatePost";
 import EditPost from "../pages/Post/EditPost";
 import Profile from "../pages/Profile/Profile";
 import StartPage from "../pages/Auth/StartPage";
+import Post from "../pages/Post/Post";
+
 
 const AppRouter = () => {
 
@@ -20,7 +22,7 @@ const AppRouter = () => {
             <Route path={'/profile'} element={<Profile/>}/>
             <Route path={'/'} element={<StartPage/>}/>
             <Route path={'/posts'} element={<Posts/>}/>
-
+            <Route path={'/posts/:id'} element={<Post/>}/>
             <Route path={'/posts/create'} element={<CreatePost/>}/>
             <Route path={'/posts/:id/edit'} element={<EditPost/>}/>
             <Route path={'/news'} element={<News/>}/>

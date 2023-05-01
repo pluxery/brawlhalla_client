@@ -3,13 +3,14 @@ import '../../styles/Start.css';
 import fon from '../../images/fon.jpg'
 import Login from "./Login";
 import Register from "./Register";
-import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
-import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
+//import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
+//import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
 
 
 
 const StartPage = () => {
     const[show, setShow] = useState(false);
+
     return (
         <React.Fragment>
              <div className="start">
@@ -18,7 +19,7 @@ const StartPage = () => {
                         <div className="start__switch">
                             {show ? <p>Нет аккаунта?</p> : <p>Уже есть аккаунт? </p>}
                             <button className="Button" onClick={() => setShow(!show)} >
-                                {show ? <ArrowCircleRightOutlinedIcon/> : <ArrowCircleLeftOutlinedIcon/> }
+                                {/*{show ? <ArrowCircleRightOutlinedIcon/> : <ArrowCircleLeftOutlinedIcon/> }*/}
                             </button>
                         </div>
                     </div>

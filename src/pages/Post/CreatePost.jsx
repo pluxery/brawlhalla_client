@@ -1,7 +1,7 @@
 import React from 'react';
 import BhButton from "../../components/UI/button/BhButton";
 import BhInput from "../../components/UI/input/BhInput";
-import BhSelect from "../../components/UI/BhSelect/BhSelect";
+import BhSelect from "../../components/UI/select/BhSelect";
 
 const CreatePost = () => {
     return (
