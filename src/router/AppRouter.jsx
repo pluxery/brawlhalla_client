@@ -13,26 +13,38 @@ import StartPage from "../pages/Auth/StartPage";
 import Post from "../pages/Post/Post";
 
 
-const AppRouter = () => {
+export const useRoutes = (isAuthenticated) => {
+    if (false) {
+        return null;//ADMIN ROUTES
+    }
+    if (isAuthenticated) {
+        return (
 
-    return (
+            <Routes>
+                <Route path={'/profile'} element={<Profile/>}/>
+                <Route path={'/'} element={<StartPage/>}/>
+                <Route path={'/posts'} element={<Posts/>}/>
+                <Route path={'/posts/:id'} element={<Post/>}/>
+                <Route path={'/posts/create'} element={<CreatePost/>}/>
+                <Route path={'/posts/:id/edit'} element={<EditPost/>}/>
+                <Route path={'/news'} element={<News/>}/>
+                <Route path={'/legends'} element={<Legends/>}/>
+                <Route path={'/weapons'} element={<Weapons/>}/>
+                <Route path={'/about'} element={<About/>}/>
+            </Routes>
+
+        )
+    } else {//GUEST ROUTES
+        return(
+
         <Routes>
             <Route path={'/login'} element={<Login/>}/>
             <Route path={'/register'} element={<Register/>}/>
-            <Route path={'/profile'} element={<Profile/>}/>
-            <Route path={'/'} element={<StartPage/>}/>
-            <Route path={'/posts'} element={<Posts/>}/>
-            <Route path={'/posts/:id'} element={<Post/>}/>
-            <Route path={'/posts/create'} element={<CreatePost/>}/>
-            <Route path={'/posts/:id/edit'} element={<EditPost/>}/>
-            <Route path={'/news'} element={<News/>}/>
-
-
-            <Route path={'/legends'} element={<Legends/>}/>
-            <Route path={'/weapons'} element={<Weapons/>}/>
             <Route path={'/about'} element={<About/>}/>
         </Routes>
-    );
-};
 
-export default AppRouter;
+    )
+
+    }
+}
+

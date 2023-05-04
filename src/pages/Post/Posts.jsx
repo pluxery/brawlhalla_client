@@ -20,12 +20,11 @@ const Posts = () => {
 
             <div className={'posts__wrapper'}>
                 {posts.map(item => (
-                   <PostItem post={item}/>
+                   <PostItem post={item} key={item.id}/>
                 ))}
             </div>
         </>
     );
-
 };
 
 export default Posts;
