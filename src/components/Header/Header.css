@@ -9,8 +9,12 @@
 
 }
 
-.link{
+.header__link{
     text-decoration: none;
     color: white;
     margin:  0 5px;;
+}
+
+.header__link:hover{
+    color: white;
 }

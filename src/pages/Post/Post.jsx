@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import PostService from "../../API/PostService";
 import postItem from "../../components/PostItem/PostItem";
+import { Button } from 'react-bootstrap';
 
 const Post = () => {
     const params = useParams();

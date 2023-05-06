@@ -21,7 +21,7 @@ export const useRoutes = (isAuthenticated) => {
     if (isAuthenticated) {
         return (
             <Routes>
-                <Route path={'/profile'} element={<Profile/>}/>
+                <Route path={'/profile'} element={<Layout children={<Profile/>}/>}/>
 
                 <Route path={'/posts'} element={<Layout children={<Posts/>}/>}/>
                 <Route path={'/posts/:id'} element={<Layout children={<Post/>}/>}/>

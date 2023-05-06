@@ -1,28 +1,17 @@
 import React from 'react';
 import BhLink from "../UI/link/BhLink";
+import {NavLink} from "react-router-dom";
 
 
 const PostItem = ({post}) => {
     return (
-        <div className={'post__wrapper'}>
-            <div className={'post__img_wrapper'}>
-                <img src={"post.image"} alt={'img not found'}/>
-            </div>
-
-            <div className={"post__text_wrapper"}>
-
-                <div className={'post__title'}>
-                    <BhLink to={`/posts/${post.id}`}><h4>{post.title}</h4></BhLink>
-                    <div>
-                        <span style={{marginRight: 10}}>{post.created_at}</span>
-                        <span>{post.author.name}</span>
-                    </div>
+        <div className="card" style={{width: "25rem", height: "25rem"}}>
+            <img src="https://cdn2.unrealengine.com/atla-productart-1920x1080-1920x1080-477cda5a5a30.jpg" className="card-img-top" alt="..."/>
+                <div className="card-body">
+                    <h5 className="card-title">{post.title}</h5>
+                    <p className="card-text">краткое описание</p>
+                    <NavLink to={`/posts/${post.id}`} className="btn btn-success">View more</NavLink>
                 </div>
-
-                <div className={'post__content'}>
-                    {post.content}
-                </div>
-            </div>
         </div>
     );
 };

@@ -1,29 +1,15 @@
 import React from 'react';
 import './NewsItem.css'
+import {NavLink} from "react-router-dom";
 
 const NewsItem = (news) => {
     return (
-        <div className={'post__wrapper'}>
-            <div className={'post__img_wrapper'}>
-                <img src={news.image} alt={'img not found'}/>
-            </div>
-
-            <div className={"post__text_wrapper"}>
-
-                <div className={'post__title'}>
-                    <h4>{news.title}New Patch 7.16</h4>
-                </div>
-
-                <div className={'post__content'}>
-                    {/*post.text*/}
-                    Get ready for the first ever rounds of Volleybrawl Triples featured as the Brawl of the Week! Hit
-                    the stadium’s sands in teams of 3 to compete for the love of this newest Game Mode. This week Thea
-                    sprints into the...
-                    Get ready for the first ever rounds of Volleybrawl Triples featured as the Brawl of the Week! Hit
-                    the stadium’s sands in teams of 3 to compete for the love of this newest Game Mode. This week Thea
-                    sprints into the...
-
-                </div>
+        <div className="card" style={{width: "25rem", height: "25rem"}}>
+            <img src="https://www.brawlhalla.com/c/uploads/2022/08/Brawlhalla_BoxArt_1920x1080.jpg" className="card-img-top" alt="..."/>
+            <div className="card-body">
+                <h5 className="card-title">Patch 7.03</h5>
+                <p className="card-text">краткое описание</p>
+                <NavLink to={`/posts/${1}`} className="btn btn-success">View more</NavLink>
             </div>
         </div>
     );

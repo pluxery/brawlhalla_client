@@ -1,12 +1,18 @@
 import React from 'react';
 import './Legend.css'
-const LegendItem = () => {
+import {Button} from "react-bootstrap";
+import {NavLink} from "react-router-dom";
+
+const LegendItem = ({legend}) => {
+
     return (
-        <div className={'legend__wrapper'}>
-            <div className={'legend__img_wrapper'}>
-                <img src={''} alt={'avatar'}/>
+        <div className="card mb-2" style={{width: "12rem", height: "16rem"}}>
+            <img src="https://www.brawlhalla.com/c/uploads/2021/07/bodvar.png" className="card-img-top" alt="..."/>
+            <div className="card-body">
+                <NavLink to={`/legends/${legend.id}`}>
+                    <Button className={'btn-success'}>{legend.name}</Button>
+                </NavLink>
             </div>
-            <p>full name</p>
         </div>
     );
 };
