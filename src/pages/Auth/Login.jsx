@@ -6,10 +6,12 @@ import '../../styles/Login.css';
 import {AuthContext} from "../../context/AuthContext";
 import {useHttp} from '../../hooks/http.hook'
 import {useAuth} from "../../hooks/auth.hook";
+import {redirect, useNavigate} from "react-router-dom";
 
 const Login = () => {
     const authContext = useContext(AuthContext)
     const {request} = useHttp()
+    const navigate = useNavigate()
     const [form, setForm] = useState({
         email: '', password: ''
     })
@@ -19,9 +21,9 @@ const Login = () => {
     const loginHandler = async (e) => {
         e.preventDefault()
         try {
-
             const data = await request('http://127.0.0.1:8000/api/auth/login', 'POST', {...form})
             authContext.login(data.access_token)
+            navigate('/posts')
         } catch (e) {
 
         }

@@ -3,6 +3,8 @@ import '../../styles/Start.css';
 import fon from '../../images/fon.jpg'
 import Login from "./Login";
 import Register from "./Register";
+import {NavLink} from "react-router-dom";
+import BhLink from "../../components/UI/link/BhLink";
 //import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowCircleLeftOutlined';
 //import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
 
@@ -22,6 +24,8 @@ const StartPage = () => {
                                 {/*{show ? <ArrowCircleRightOutlinedIcon/> : <ArrowCircleLeftOutlinedIcon/> }*/}
                             </button>
                         </div>
+                        {/*todo подровнять ссылку*/}
+                        <NavLink to={'/posts'} className={"start__link"}><p>Продолжить как гость</p></NavLink>
                     </div>
 
                     <div className="start_img">

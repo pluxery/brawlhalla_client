@@ -11,6 +11,7 @@ import EditPost from "../pages/Post/EditPost";
 import Profile from "../pages/Profile/Profile";
 import StartPage from "../pages/Auth/StartPage";
 import Post from "../pages/Post/Post";
+import Layout from "../Layout/Layout";
 
 
 export const useRoutes = (isAuthenticated) => {
@@ -19,31 +20,35 @@ export const useRoutes = (isAuthenticated) => {
     }
     if (isAuthenticated) {
         return (
-
             <Routes>
                 <Route path={'/profile'} element={<Profile/>}/>
-                <Route path={'/'} element={<StartPage/>}/>
-                <Route path={'/posts'} element={<Posts/>}/>
-                <Route path={'/posts/:id'} element={<Post/>}/>
-                <Route path={'/posts/create'} element={<CreatePost/>}/>
-                <Route path={'/posts/:id/edit'} element={<EditPost/>}/>
-                <Route path={'/news'} element={<News/>}/>
-                <Route path={'/legends'} element={<Legends/>}/>
-                <Route path={'/weapons'} element={<Weapons/>}/>
-                <Route path={'/about'} element={<About/>}/>
+
+                <Route path={'/posts'} element={<Layout children={<Posts/>}/>}/>
+                <Route path={'/posts/:id'} element={<Layout children={<Post/>}/>}/>
+                <Route path={'/posts/create'} element={<Layout children={<CreatePost/>}/>}/>
+                <Route path={'/posts/:id/edit'} element={<Layout children={<EditPost/>}/>}/>
+
+                <Route path={'/news'} element={<Layout children={<News/>}/>}/>
+                <Route path={'/legends'} element={<Layout children={<Legends/>}/>}/>
+                <Route path={'/weapons'} element={<Layout children={<Weapons/>}/>}/>
+                <Route path={'/about'} element={<Layout children={<About/>}/>}/>
+
             </Routes>
 
         )
     } else {//GUEST ROUTES
-        return(
+        return (
+            <Routes>
+                <Route path={'/'} element={<StartPage/>}/>
+                <Route path={'/posts'} element={<Layout children={<Posts/>}/>}/>
+                <Route path={'/posts/:id'} element={<Layout children={<Post/>}/>}/>
+                <Route path={'/news'} element={<Layout children={<News/>}/>}/>
+                <Route path={'/legends'} element={<Layout children={<Legends/>}/>}/>
+                <Route path={'/weapons'} element={<Layout children={<Weapons/>}/>}/>
+                <Route path={'/about'} element={<Layout children={<About/>}/>}/>
+            </Routes>
 
-        <Routes>
-            <Route path={'/login'} element={<Login/>}/>
-            <Route path={'/register'} element={<Register/>}/>
-            <Route path={'/about'} element={<About/>}/>
-        </Routes>
-
-    )
+        )
 
     }
 }

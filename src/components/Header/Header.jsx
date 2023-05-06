@@ -1,8 +1,16 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import "./Header.css";
 import BhLink from "../UI/link/BhLink";
+import {AuthContext} from "../../context/AuthContext";
+import {NavLink, redirect} from "react-router-dom";
+import BhButton from "../UI/button/BhButton";
 
 const Header = () => {
+    const auth = useContext(AuthContext)
+
+    const logoutOnClick = () => {
+        auth.logout()
+    }
     return (
         <div className={'header__wrapper'}>
             <div>
@@ -15,9 +23,11 @@ const Header = () => {
             </div>
 
             <div>
-                <BhLink to={'/login'}>Войти</BhLink>
-                <BhLink to={'/register'}>Регистрация</BhLink>
-                <BhLink to={'/profile'}>Профиль</BhLink>
+                {auth.token == null ? <BhLink to={'/'}>Войти</BhLink>:
+                    <>
+                    <NavLink to={'/profile'}>Профиль</NavLink>
+                    <BhButton onClick={logoutOnClick}>Выйти</BhButton>
+                </>}
             </div>
         </div>
     );

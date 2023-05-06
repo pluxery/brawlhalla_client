@@ -30,6 +30,11 @@ img{
     justify-content: center;
     text-align: center;
 }
+
+.start__link{
+    text-decoration: none;
+    color: white;
+}
 .start__switch > p{
     margin:10px auto;
     padding-right: 10px;
