@@ -3,24 +3,26 @@ import '../../styles/Profile.css'
 import {useHttp} from "../../hooks/http.hook";
 import {AuthContext} from "../../context/AuthContext";
 import {Button} from 'react-bootstrap';
-import {NavLink} from "react-router-dom";
+import {NavLink, useParams} from "react-router-dom";
 import MyPosts from "./Components/MyPosts";
 import Loader from "../../components/Loader/Loader";
 
-const MyProfile = ({children = <MyPosts/>}) => {
+const Profile = ({children = <MyPosts/>}) => {
     const {request, loading} = useHttp()
-    const auth = useContext(AuthContext)
+    const params = useParams()
+    const userId = params.id
+    //const auth = useContext(AuthContext)
     const [user, setUser] = useState({});
 
     useEffect(() => {
         async function getUserData() {
             try {
-                return await request('http://127.0.0.1:8000/api/auth/me', 'POST')
+                return await request(`http://127.0.0.1:8000/api/users/${userId}`)
             } catch (e) {
             }
         }
 
-        getUserData().then(result => setUser(result))
+        getUserData().then(result => setUser(result.data))
     }, [setUser]);
 
     if (loading) {
@@ -50,8 +52,9 @@ const MyProfile = ({children = <MyPosts/>}) => {
                                         </div>
                                         <ul className="profile-header-tab nav nav-tabs">
                                             <li className="nav-item">
-                                                <NavLink target="__blank" className="nav-link_" to={'/profile/posts'}>Мои
-                                                    записи</NavLink>
+                                                <NavLink target="__blank" className="nav-link_"
+                                                         to={`/profile/${user.id}`}>
+                                                    Мои записи</NavLink>
                                             </li>
                                             <li className="nav-item">
                                                 <NavLink target="__blank" className="nav-link_"
@@ -67,17 +70,18 @@ const MyProfile = ({children = <MyPosts/>}) => {
                                             </li>
                                         </ul>
 
+
                                     </div>
                                     {children}
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </>
-
         );
     }
 };
 
-export default MyProfile;
+export default Profile;

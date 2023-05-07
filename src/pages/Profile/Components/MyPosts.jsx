@@ -2,24 +2,23 @@ import React, {useContext, useEffect, useState} from 'react';
 import PostItem from "../../../components/PostItem/PostItem";
 import {useHttp} from "../../../hooks/http.hook";
 import {AuthContext} from "../../../context/AuthContext";
+import {useParams} from "react-router-dom";
 
 const MyPosts = () => {
     const {request} = useHttp()
-    const auth = useContext(AuthContext)
-
+    // const auth = useContext(AuthContext)
+    const params = useParams()
+    const userId = params.id
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
         async function fetchData() {
             try {
-                const user = await request('http://127.0.0.1:8000/api/auth/me', 'POST')
-                const postsByUserId = await request(`http://127.0.0.1:8000/api/posts?author=${user.id}`)
-                console.log("my posts = ", postsByUserId)
+                const postsByUserId = await request(`http://127.0.0.1:8000/api/posts?author=${userId}`)
                 return postsByUserId.data
             } catch (e) {
             }
         }
-
         fetchData().then(result => setPosts(result))
     }, [setPosts]);
     return (

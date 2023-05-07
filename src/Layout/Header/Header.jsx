@@ -1,30 +1,16 @@
 import React, {useContext, useEffect, useState} from 'react';
 import "./Header.css";
 import {AuthContext} from "../../context/AuthContext";
-import {NavLink, redirect} from "react-router-dom";
+import {NavLink, redirect, useParams} from "react-router-dom";
 import {Button} from 'react-bootstrap';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import {useHttp} from "../../hooks/http.hook";
 
 const Header = () => {
     const auth = useContext(AuthContext)
-
     const logoutOnClick = () => {
         auth.logout()
     }
-    const {request} = useHttp()
-    const [user, setUser] = useState({});
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                return await request('http://127.0.0.1:8000/api/auth/me', 'POST')
-            } catch (e) {
-            }
-        }
-
-        fetchData().then(result => setUser(result))
-    }, [setUser]);
-
 
     return (
         <div className={'header__wrapper'}>
@@ -39,7 +25,11 @@ const Header = () => {
             <div>
                 {auth.token == null ? <NavLink to={'/'}><Button>Войти</Button></NavLink> :
                     <>
-                        <NavLink className={'header__link'} to={'/profile'}>{user?.name}<AccountBoxIcon/></NavLink>
+                        <NavLink className={'header__link'} to={`/profile/${auth.user.id}`}>
+                            {auth.user.name}
+                            <AccountBoxIcon/>
+                        </NavLink>
+
                         <NavLink to={'/'}><Button
                             className={'btn-danger'}
                             onClick={logoutOnClick}>

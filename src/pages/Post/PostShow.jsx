@@ -12,7 +12,7 @@ const PostShow = () => {
     const {request, loading} = useHttp()
     useEffect(() => {
         async function getPostById() {
-            return await request(`http://127.0.0.1:8000/api/posts/${postId}`,)
+            return await request(`http://127.0.0.1:8000/api/posts/${postId}`)
         }
 
         getPostById().then(r => setPost(r.data))
@@ -49,7 +49,9 @@ const PostShow = () => {
                                         {item.created_at}
                                     </div>
                                     <div className="card-body">
-                                        <h5 className="card-title">{item.author?.name}</h5>
+                                        <NavLink to={`/profile/${item.author?.id}`}>
+                                            <h5 className="card-title">{item.author?.name}</h5>
+                                        </NavLink>
                                         <p className="card-text">{item.text}</p>
                                     </div>
                                 </div>
@@ -81,9 +83,6 @@ const PostShow = () => {
                     </div>
                 </div>
 
-                <div className="footer">
-                    <h2>Footer</h2>
-                </div>
             </>
         );
     }

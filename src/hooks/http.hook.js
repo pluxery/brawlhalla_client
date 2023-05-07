@@ -1,7 +1,13 @@
 import {useState, useCallback, useContext} from 'react'
 import { AuthContext } from '../context/AuthContext'
 
-
+function sleep(milliseconds) {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+        currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
+}
 export const useHttp = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)

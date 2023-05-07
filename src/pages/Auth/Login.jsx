@@ -22,7 +22,7 @@ const Login = () => {
         e.preventDefault()
         try {
             const data = await request('http://127.0.0.1:8000/api/auth/login', 'POST', {...form})
-            authContext.login(data.access_token)
+            authContext.login(data.access_token, data.user.original)
             navigate('/posts')
         } catch (e) {
 

@@ -2,23 +2,22 @@ import {BrowserRouter} from "react-router-dom";
 import {useRoutes} from "./router/AppRouter";
 import {useAuth} from "./hooks/auth.hook";
 import {AuthContext} from "./context/AuthContext";
+import {useEffect, useState} from "react";
+import {useHttp} from "./hooks/http.hook";
 
 
 function App() {
-    const {token, login, logout} = useAuth()
+
+    const {token, login, logout, user} = useAuth()
     const isAuthenticated = !!token
     const routes = useRoutes(isAuthenticated)
-    return (
-        <>
-            <AuthContext.Provider value={{
-                token, login, logout, isAuthenticated
-            }}>
-                <BrowserRouter >
-                    {routes}
-                </BrowserRouter >
-            </AuthContext.Provider>
-        </>
-    );
+    return (<>
+        <AuthContext.Provider value={{token, login, logout, isAuthenticated, user}}>
+            <BrowserRouter>
+                {routes}
+            </BrowserRouter>
+        </AuthContext.Provider>
+    </>);
 
 }
 
