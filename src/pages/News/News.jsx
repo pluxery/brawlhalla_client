@@ -1,6 +1,6 @@
 import React from 'react';
-import PostItem from "../components/PostItem/PostItem";
-import NewsItem from "../components/NewsItem/NewsItem";
+import PostItem from "../../components/PostItem/PostItem";
+import NewsItem from "../../components/NewsItem/NewsItem";
 
 const News = () => {
     let post = {

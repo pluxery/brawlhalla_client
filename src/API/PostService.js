@@ -11,4 +11,10 @@ export default  class PostService{
         const result = await axios(`http://127.0.0.1:8000/api/posts/${id}`);
         return result.data
     };
+
+    static async getPostsByTag(tag) {
+        const result = await axios(`http://127.0.0.1:8000/api/tags/${tag}`);
+        return result.data
+    };
+
 }

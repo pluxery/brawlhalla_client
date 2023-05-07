@@ -1,25 +1,16 @@
-import React, {useContext, useEffect, useState} from 'react';
-import '../../styles/Profile.css'
-import BhButton from "../../components/UI/button/BhButton";
-import {useHttp} from "../../hooks/http.hook";
-import {AuthContext} from "../../context/AuthContext";
-import {Button} from 'react-bootstrap';
-import {NavLink} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {NavLink, useParams} from "react-router-dom";
+import PostService from "../../API/PostService";
+import UserService from "../../API/UserService";
+import {Button} from "react-bootstrap";
 
-const Profile = () => {
-    const {request} = useHttp()
-    const auth = useContext(AuthContext)
+const OtherProfile = () => {
+    const params = useParams();
+    const userId = params.id;
     const [user, setUser] = useState({});
 
     useEffect(() => {
-        async function fetchData() {
-            try {
-                return await request('http://127.0.0.1:8000/api/auth/me', 'POST')
-            } catch (e) {
-            }
-        }
-
-        fetchData().then(result => setUser(result))
+        UserService.getUserById(userId).then(r => setUser(r.data))
     }, [setUser]);
     return (
         <>
@@ -43,7 +34,7 @@ const Profile = () => {
                                     </div>
                                     <ul className="profile-header-tab nav nav-tabs">
                                         <li className="nav-item">
-                                            <NavLink target="__blank" className="nav-link_" to={'/'}>Мои записи</NavLink>
+                                            <NavLink target="__blank" className="nav-link_" to={'/profile/posts'}>Мои записи</NavLink>
                                         </li>
                                         <li className="nav-item">
                                             <NavLink target="__blank" className="nav-link_" to={'/'}>Друзья</NavLink>
@@ -55,15 +46,17 @@ const Profile = () => {
                                             <NavLink target="__blank" className="nav-link_" to={'/'}>Что-то еще</NavLink>
                                         </li>
                                     </ul>
+
                                 </div>
+
+                                <h1>children</h1>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </>
-
     );
 };
 
-export default Profile;
+export default OtherProfile;

@@ -3,7 +3,7 @@ import BhInput from "../../components/UI/input/BhInput";
 import BhButton from "../../components/UI/button/BhButton";
 import '../../styles/EditPost.css'
 import BhSelect from "../../components/UI/select/BhSelect";
-const EditPost = () => {
+const PostEdit = () => {
     return (
         <div>
             <form className={'post_edit__wrapper'}>
@@ -27,4 +27,4 @@ const EditPost = () => {
     );
 };
 
-export default EditPost;
+export default PostEdit;

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import LegendItem from "../components/LegendItem/LegendItem";
-import '../styles/Legends.css'
-import LegendService from "../API/LegendService";
-import PostItem from "../components/PostItem/PostItem";
+import LegendItem from "../../components/LegendItem/LegendItem";
+import '../../styles/Legends.css'
+import LegendService from "../../API/LegendService";
+import PostItem from "../../components/PostItem/PostItem";
 
 
 const Legends = () => {

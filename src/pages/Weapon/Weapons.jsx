@@ -1,9 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
-import WeaponItem from "../components/WeaponItem/WeaponItem";
-import '../styles/Weapons.css'
-import {AuthContext} from "../context/AuthContext";
-import PostService from "../API/PostService";
-import WeaponService from "../API/WeaponService";
+import WeaponItem from "../../components/WeaponItem/WeaponItem";
+import '../../styles/Weapons.css'
+import {AuthContext} from "../../context/AuthContext";
+import PostService from "../../API/PostService";
+import WeaponService from "../../API/WeaponService";
 
 const Weapons = () => {
 

@@ -10,7 +10,7 @@ import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOu
 
 
 
-const StartPage = () => {
+const AuthPage = () => {
     const[show, setShow] = useState(false);
 
     return (
@@ -37,4 +37,4 @@ const StartPage = () => {
     );
 };
 
-export default StartPage;
+export default AuthPage;
