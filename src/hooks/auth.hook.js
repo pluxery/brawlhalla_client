@@ -1,29 +1,33 @@
 import {useState, useCallback, useEffect} from 'react'
 
-const storageName = 'auth_storage'
+export const STORAGE = 'brawlhalla'
 
 
 
 export const useAuth = () => {
     const [token, setToken] = useState(null)
     const [user, setUser] = useState({})
+
+
     const login = useCallback((accessToken, userData) => {
         setToken(accessToken)
         setUser(userData)
-        localStorage.setItem(storageName, JSON.stringify({
+        localStorage.setItem(STORAGE, JSON.stringify({
             token: accessToken,
             user: userData
         }))
     }, [])
 
+
+
     const logout = useCallback(() => {
         setToken(null)
         setUser({})
-        localStorage.removeItem(storageName)
+        localStorage.removeItem(STORAGE)
     }, [])
 
     useEffect(() => {
-        const data = JSON.parse(localStorage.getItem(storageName))
+        const data = JSON.parse(localStorage.getItem(STORAGE))
         if (data && data.token && data.user.original) {
             login(data.token, data.user.original)
         }

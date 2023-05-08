@@ -3,7 +3,8 @@ import axios from "axios";
 
 export default  class WeaponService{
     static async getAllWeapons() {
-        const result = await axios('http://127.0.0.1:8000/api/weapons',);
+        const result = await axios('http://127.0.0.1:8000/api/weapons');
+        console.log(result.data)
         return result.data
     };
 

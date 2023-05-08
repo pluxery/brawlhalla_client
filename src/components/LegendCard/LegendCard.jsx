@@ -1,9 +1,9 @@
 import React from 'react';
-import './Legend.css'
+import './LegendCard.css'
 import {Button} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
 
-const LegendItem = ({legend}) => {
+const LegendCard = ({legend}) => {
 
     return (
         <div className="card mb-2" style={{width: "12rem", height: "16rem"}}>
@@ -17,4 +17,4 @@ const LegendItem = ({legend}) => {
     );
 };
 
-export default LegendItem;
+export default LegendCard;

@@ -1,6 +1,6 @@
 import React from 'react';
-import PostItem from "../../components/PostItem/PostItem";
-import NewsItem from "../../components/NewsItem/NewsItem";
+import PostCard from "../../components/PostCard/PostCard";
+import NewsCard from "../../components/NewsCard/NewsCard";
 
 const News = () => {
     let post = {
@@ -14,12 +14,12 @@ const News = () => {
         <>
             <h1>Новости:</h1>
             <div className={'posts__wrapper'}>
-                <NewsItem post={post}/>
-                <NewsItem post={post}/>
-                <NewsItem post={post}/>
-                <NewsItem post={post}/>
-                <NewsItem post={post}/>
-                <NewsItem post={post}/>
+                <NewsCard post={post}/>
+                <NewsCard post={post}/>
+                <NewsCard post={post}/>
+                <NewsCard post={post}/>
+                <NewsCard post={post}/>
+                <NewsCard post={post}/>
             </div>
         </>
     );

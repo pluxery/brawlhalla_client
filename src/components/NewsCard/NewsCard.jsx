@@ -1,8 +1,8 @@
 import React from 'react';
-import './NewsItem.css'
+import './NewsCard.css'
 import {NavLink} from "react-router-dom";
 
-const NewsItem = (news) => {
+const NewsCard = ({news}) => {
     return (
         <div className="card" style={{width: "25rem", height: "25rem"}}>
             <img src="https://www.brawlhalla.com/c/uploads/2022/08/Brawlhalla_BoxArt_1920x1080.jpg" className="card-img-top" alt="..."/>
@@ -15,4 +15,4 @@ const NewsItem = (news) => {
     );
 };
 
-export default NewsItem;
+export default NewsCard;

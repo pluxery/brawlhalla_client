@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import LegendItem from "../../components/LegendItem/LegendItem";
+import LegendCard from "../../components/LegendCard/LegendCard";
 import '../../styles/Legends.css'
 import LegendService from "../../API/LegendService";
-import PostItem from "../../components/PostItem/PostItem";
+import PostCard from "../../components/PostCard/PostCard";
 
 
 const Legends = () => {
@@ -20,7 +20,7 @@ const Legends = () => {
             <h1 style={{textAlign: "center"}}>Legends:</h1>
             <div className={'legends__wrapper'}>
                 {legends.map(item => (
-                    <LegendItem legend={item} key={item.id}/>
+                    <LegendCard legend={item} key={item.id}/>
                 ))}
             </div>
         >

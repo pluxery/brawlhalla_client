@@ -1,12 +1,11 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import BhInput from "../../components/UI/input/BhInput";
 import BhButton from "../../components/UI/button/BhButton";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/Login.css';
 import {AuthContext} from "../../context/AuthContext";
 import {useHttp} from '../../hooks/http.hook'
-import {useAuth} from "../../hooks/auth.hook";
-import {redirect, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 const Login = () => {
     const authContext = useContext(AuthContext)
@@ -21,7 +20,7 @@ const Login = () => {
     const loginHandler = async (e) => {
         e.preventDefault()
         try {
-            const data = await request('http://127.0.0.1:8000/api/auth/login', 'POST', {...form})
+            const data = await request('/auth/login', 'POST', {...form})
             authContext.login(data.access_token, data.user.original)
             navigate('/posts')
         } catch (e) {

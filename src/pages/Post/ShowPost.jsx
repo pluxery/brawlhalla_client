@@ -1,22 +1,24 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {NavLink, useParams} from "react-router-dom";
 import {Button} from 'react-bootstrap';
 import '../../styles/PostShow.css'
 import {useHttp} from "../../hooks/http.hook";
 import Loader from "../../components/Loader/Loader";
+import {AuthContext} from "../../context/AuthContext";
 
-const PostShow = () => {
+const ShowPost = () => {
+    const auth = useContext(AuthContext)
     const params = useParams();
     const postId = params.id;
     const [post, setPost] = useState({});
     const {request, loading} = useHttp()
     useEffect(() => {
         async function getPostById() {
-            return await request(`http://127.0.0.1:8000/api/posts/${postId}`)
+            return await request(`/posts/${postId}`)
         }
 
         getPostById().then(r => setPost(r.data))
-    }, [setPost]);
+    }, [postId, request, setPost]);
 
 
     if (loading) {
@@ -74,6 +76,18 @@ const PostShow = () => {
                                 <Button className={'btn-success'}>Go to profile</Button>
                             </NavLink>
                         </div>
+                        {post.author?.id === auth.user.id ?
+
+                            <div className="card">
+                                <NavLink to={`/posts/${post.id}/edit`} className={'btn btn-success mb-3'}>
+                                    Редактировать запись
+                                </NavLink>
+                                <NavLink to={`/posts/${post.id}/delete`} className={'btn btn-danger'}>
+                                    Удалить запись
+                                </NavLink>
+                            </div> : null}
+
+
                         <div className="card">
                             <h3>Popular Post</h3>
                             <div className="fakeimg">Image</div>
@@ -88,4 +102,4 @@ const PostShow = () => {
     }
 };
 
-export default PostShow;
+export default ShowPost;
