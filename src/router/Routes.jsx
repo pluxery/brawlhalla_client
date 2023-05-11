@@ -13,21 +13,29 @@ import AuthPage from "../pages/Auth/AuthPage";
 import ShowPost from "../pages/Post/ShowPost";
 import Layout from "../Layout/Layout";
 import ShowWeapon from "../pages/Weapon/ShowWeapon";
+import ProfileFriendList from "../pages/Profile/components/ProfileFriendList";
+import ProfileAbout from "../pages/Profile/components/ProfileAbout";
+import ProfilePostList from "../pages/Profile/components/ProfilePostList";
+import React from "react";
 
 
 
 export const useRoutes = (isAuthenticated) => {
-    if (false) {
-        return null;//ADMIN ROUTES
-    }
     if (isAuthenticated) {
         return (
             <Routes>
                 <Route path={'/'} element={<Layout children={<IndexPost/>}/>}/>
-                <Route path={'/profile/:id'} element={<Layout children={<Profile/>}/>}/>
+
+                <Route path={'/profile/:id'} element={<Layout children={<Profile children={<ProfilePostList/>}/>}/>}/>
+                <Route path={'/profile/:id/friends'} element={<Layout children={<Profile children={<ProfileFriendList/>}/>}/>}/>
+                <Route path={'/profile/:id/about'} element={<Layout children={<Profile children={<ProfileAbout/>}/>}/>}/>
+
+
+
                 <Route path={'/posts'} element={<Layout children={<IndexPost/>}/>}/>
                 <Route path={'/posts/search/category/:category'} element={<Layout children={<IndexPost/>}/>}/>
                 <Route path={'/posts/search/author/:author'} element={<Layout children={<IndexPost/>}/>}/>
+                <Route path={'/posts/search/tag/:tag'} element={<Layout children={<IndexPost/>}/>}/>
 
                 <Route path={'/posts/:id'} element={<Layout children={<ShowPost/>}/>}/>
                 <Route path={'/posts/create'} element={<Layout children={<CreatePost/>}/>}/>
@@ -40,13 +48,15 @@ export const useRoutes = (isAuthenticated) => {
                 <Route path={'/weapons/:id'} element={<Layout children={<ShowWeapon/>}/>}/>
                 <Route path={'/about'} element={<Layout children={<About/>}/>}/>
 
-            </Routes>
 
+
+            </Routes>
         )
-    } else {//GUEST ROUTES
+    } else {
         return (
             <Routes>
                 <Route path={'/'} element={<AuthPage/>}/>
+                <Route path={'/profile/:id'} element={<Layout children={<Profile/>}/>}/>
                 <Route path={'/posts'} element={<Layout children={<IndexPost/>}/>}/>
                 <Route path={'/posts/search/category/:category'} element={<Layout children={<IndexPost/>}/>}/>
                 <Route path={'/posts/search/author/:author'} element={<Layout children={<IndexPost/>}/>}/>

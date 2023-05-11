@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import PostCard from "../PostCard/PostCard";
-import {useHttp} from "../../hooks/http.hook";
+import PostCard from "../../../components/PostCard/PostCard";
+import {useHttp} from "../../../hooks/http.hook";
 
-import {useParams} from "react-router-dom";
+import {NavLink, useParams} from "react-router-dom";
+import {Button} from "react-bootstrap";
+import AddIcon from "@mui/icons-material/Add";
 
 const ProfilePostList = () => {
     const {request} = useHttp()
@@ -22,6 +24,9 @@ const ProfilePostList = () => {
     }, [request, setPosts, userId]);
     return (
         <div className={'posts__wrapper'}>
+            <NavLink to={'/posts/create'}>
+                <Button className={'mt-2 btn-success'}>Создать статью<AddIcon/></Button>
+            </NavLink>
             {posts.map(item => (
                 <PostCard post={item} key={item.id}/>
             ))}

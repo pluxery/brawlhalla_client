@@ -1,10 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Button} from 'react-bootstrap'
-import {useHttp} from "../../hooks/http.hook";
+import {API_URI, useHttp} from "../../hooks/http.hook";
 import {useNavigate, useParams} from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
+import axios from "axios";
+import {AuthContext} from "../../context/AuthContext";
 
 const EditPost = () => {
+    const auth = useContext(AuthContext)
     const [post, setPost] = useState()
     const {request, loading} = useHttp()
     const {id} = useParams()
@@ -16,7 +19,6 @@ const EditPost = () => {
             }
 
             getPostById().then(r => setPost(r.data))
-            console.log("edit post", post)
         } catch (e) {
             console.log(e.message)
         }
@@ -28,18 +30,35 @@ const EditPost = () => {
             title: '',
             content: '',
             category: '',
+            tags: '',
         }
     )
     const changeInputHandler = event => {
         setForm({...form, [event.target.name]: event.target.value})
     }
+
+    function filterObject(obj) {
+        return Object.fromEntries(Object.entries(obj).filter(([key, val]) => val !== ''));
+    }
+
+    function tagsToArray(str) {
+        return str.split('#').filter(item => item !== '')
+    }
+
     const updatePostOnClick = async (e) => {
         e.preventDefault()
         try {
-            console.log('form', form)
-            //ПАТЧ метод не работает!!!
-            await request(`/posts/${post.id}`, 'PATCH', {...form})
-            navigate(`/posts`)
+            if (form.tags) {
+                form.tags = tagsToArray(form.tags)
+            }
+            const filterForm = filterObject(form)
+            await axios.patch(`${API_URI}/posts/${post.id}`, {...filterForm},
+                {
+                    headers: {
+                        Authorization: `Bearer ${auth.token}`
+                    }
+                })
+            navigate(`/profile/${post?.author.id}`)
         } catch (e) {
             console.log(e.message)
         }
@@ -55,13 +74,13 @@ const EditPost = () => {
                 </div>
 
                 <div className="mb-3">
-                    <label htmlFor="exampleFormControlInput1" className="form-label">Title</label>
+                    <label htmlFor="exampleFormControlInput1" className="form-label">Название</label>
                     <input type="text"
                            className="form-control"
                            placeholder="title"
                            id={'title'}
                            name={'title'}
-                           value={form.title? form.title : post?.title}
+                           value={form.title ? form.title : post?.title}
                            onChange={changeInputHandler}/>
                 </div>
 
@@ -72,23 +91,32 @@ const EditPost = () => {
                            placeholder="Введите категорию"
                            id={'category'}
                            name={'category'}
-                           value={form.category? form.category : post?.category?.name}
+                           value={form.category ? form.category : post?.category?.name}
                            onChange={changeInputHandler}/>
                 </div>
 
                 <div className="mb-3">
-                    <label htmlFor="exampleFormControlInput1" className="form-label">tags</label>
-                    <input type="text" className="form-control" id="tags" name={'tags'} value={''}
-                           placeholder="#tag1 #tag2 #tag3"/>
+                    <label htmlFor="exampleFormControlInput1" className="form-label">Тэги</label>
+
+                    <input type="text" className="form-control" id="tags" name={'tags'}
+                           onChange={changeInputHandler}
+                           value={
+                               form.tags ? form.tags :
+                                   post?.tags.map(tag => {
+                                       return '#' + tag.name + ' '
+                                   })
+                           }
+                           placeholder="#tag1 #tag2 #tag3"
+                    />
                 </div>
 
 
                 <div className="mb-3">
-                    <label htmlFor="exampleFormControlTextarea1" className="form-label">Content</label>
+                    <label htmlFor="exampleFormControlTextarea1" className="form-label">Текст</label>
                     <textarea className="form-control"
                               id="content"
                               name={'content'}
-                              value={form.content? form.content : post?.content}
+                              value={form.content ? form.content : post?.content}
                               onChange={changeInputHandler}
                               rows="3">
 

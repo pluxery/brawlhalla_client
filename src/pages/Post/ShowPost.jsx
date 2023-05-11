@@ -1,10 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {NavLink, useParams} from "react-router-dom";
+import {NavLink, useNavigate, useParams} from "react-router-dom";
 import {Button} from 'react-bootstrap';
 import '../../styles/PostShow.css'
-import {useHttp} from "../../hooks/http.hook";
+import {API_URI, useHttp} from "../../hooks/http.hook";
 import Loader from "../../components/Loader/Loader";
 import {AuthContext} from "../../context/AuthContext";
+import axios from "axios";
 
 const ShowPost = () => {
     const auth = useContext(AuthContext)
@@ -12,6 +13,7 @@ const ShowPost = () => {
     const postId = params.id;
     const [post, setPost] = useState({});
     const {request, loading} = useHttp()
+    const navigate = useNavigate()
     useEffect(() => {
         async function getPostById() {
             return await request(`/posts/${postId}`)
@@ -19,6 +21,21 @@ const ShowPost = () => {
 
         getPostById().then(r => setPost(r.data))
     }, [postId, request, setPost]);
+
+    const deletePostOnclick = async (e) => {
+        e.preventDefault()
+        try {
+            await axios.delete(`${API_URI}/posts/${post.id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${auth.token}`
+                    }
+                })
+            navigate(`/profile/${auth.user.id}`)
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
 
 
     if (loading) {
@@ -82,6 +99,10 @@ const ShowPost = () => {
                                 <NavLink to={`/posts/${post.id}/edit`} className={'btn btn-success mb-3'}>
                                     Редактировать запись
                                 </NavLink>
+
+                                <Button onClick={deletePostOnclick}>
+                                    Удалить запись
+                                </Button>
                                 <NavLink to={`/posts/${post.id}/delete`} className={'btn btn-danger'}>
                                     Удалить запись
                                 </NavLink>

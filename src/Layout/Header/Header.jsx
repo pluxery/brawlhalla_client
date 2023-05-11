@@ -5,21 +5,24 @@ import {NavLink} from "react-router-dom";
 import {Button} from 'react-bootstrap';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import {useHttp} from "../../hooks/http.hook";
+import {useState} from "react";
 
 
 const Header = () => {
     const auth = useContext(AuthContext)
     const {request} = useHttp()
+    
+    const [username, setUsername] = useState('')
     const logoutOnClick = () => {
         async function logout() {
             return await request('/auth/logout')
         }
-        logout()
-        auth.logout()
+        logout().then(() => auth.logout())
     }
 
     useEffect(() => {
-    }, [auth.user])
+        setUsername(auth.user.name)
+    }, [auth])
 
     return (
         <div className={'header__wrapper'}>
@@ -38,7 +41,7 @@ const Header = () => {
                     </NavLink> :
                     <>
                         <NavLink className={'header__link'} to={`/profile/${auth.user.id}`}>
-                            {auth.user.name}
+                            {username}
                             <AccountBoxIcon/>
                         </NavLink>
 

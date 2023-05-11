@@ -1,36 +1,37 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import '../../styles/Profile.css'
 import {useHttp} from "../../hooks/http.hook";
 import {Button} from 'react-bootstrap';
 import {NavLink, useParams} from "react-router-dom";
-import ProfilePostList from "../../components/ProfilePostList/ProfilePostList";
+import ProfilePostList from "./components/ProfilePostList";
 import Loader from "../../components/Loader/Loader";
+import {AuthContext} from "../../context/AuthContext";
 
 
+const Profile = ({children}) => {
 
-const Profile = ({children = <ProfilePostList/>}) => {
-    
     const {request, loading} = useHttp()
     const {id} = useParams()
     const [user, setUser] = useState({});
-    
+    const auth = useContext(AuthContext)
+
 
     useEffect(() => {
-        async function getUserProfile() {
-            try {
-                return await request(`/users/${id}`)
-            } catch (e) {
-                console.log(e.message)
+            async function getUserProfile() {
+                try {
+                    return await request(`/users/${id}`)
+                } catch (e) {
+                    console.log(e.message)
+                }
             }
-        }
-        getUserProfile().then(result => setUser(result.data))
-    }, 
-        [request, setUser]);
+
+            getUserProfile().then(result => setUser(result.data))
+        },
+        [id, request, setUser]);
 
     if (loading) {
         return <Loader/>
-    }
-    else {
+    } else {
         return (
             <>
                 <div className="container">
@@ -49,33 +50,33 @@ const Profile = ({children = <ProfilePostList/>}) => {
                                             <div className="profile-header-info">
                                                 <h4 className="m-t-10 m-b-5">{user.name}</h4>
                                                 <p className="m-b-10">{user.email}</p>
-                                                <Button className="btn-success">Edit Profile</Button>
+                                                {user.id === auth.user.id ?
+                                                    <Button className="btn-success">Редактировать профиль</Button> :
+                                                    <Button className="btn-success">Добавить в друзья</Button>
+                                                }
                                             </div>
 
                                         </div>
                                         <ul className="profile-header-tab nav nav-tabs">
                                             <li className="nav-item">
-                                                <NavLink target="__blank" className="nav-link_" to={`/profile/${user.id}`}>
+                                                <NavLink className="nav-link_"
+                                                         to={`/profile/${user.id}`}>
                                                     Мои записи
                                                 </NavLink>
                                             </li>
                                             <li className="nav-item">
-                                                <NavLink target="__blank" className="nav-link_" to={'/'}>
+                                                <NavLink className="nav-link_"
+                                                         to={`/profile/${user.id}/friends`}>
                                                     Друзья
                                                 </NavLink>
                                             </li>
                                             <li className="nav-item">
-                                                <NavLink target="__blank" className="nav-link_" to={'/'}>
+                                                <NavLink className="nav-link_"
+                                                         to={`/profile/${user.id}/about`}>
                                                     Обо мне
                                                 </NavLink>
                                             </li>
-                                            <li className="nav-item">
-                                                <NavLink target="__blank" className="nav-link_" to={'/'}>
-                                                    Что-то еще
-                                                </NavLink>
-                                            </li>
                                         </ul>
-
 
                                     </div>
                                     {children}

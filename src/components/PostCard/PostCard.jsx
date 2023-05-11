@@ -18,17 +18,21 @@ const PostCard = ({post}) => {
                 <h5 className="card-title">{post.title}</h5>
                 {post.category ? <>
                     <span>Категория:</span> <br/>
-                    <NavLink to={`/posts/search/category/${post.category?.id}`}>
-                        <span>{post.category?.name}</span>
+                    <NavLink to={`/posts/search/category/${post.category.id}`}>
+                        <span>{post.category.name}</span>
                     </NavLink>
                 </> : null
                 }
                 <div>
                     {post.tags?.map((tag, index) => (
                         index < 5 ?
-                            <NavLink to={`/posts`} className={'text-primary'}>#{tag.name} </NavLink>
+                            <NavLink to={`/posts/search/tag/${tag.id}`} className={'text-primary'}>#{tag.name} </NavLink>
                             : null
                     ))}
+                </div>
+
+                <div>
+                    <span>{post?.description}</span>
                 </div>
             </div>
             <NavLink to={`/posts/${post.id}`}

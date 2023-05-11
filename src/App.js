@@ -1,5 +1,5 @@
 import {BrowserRouter} from "react-router-dom";
-import {useRoutes} from "./router/AppRouter";
+import {useRoutes} from "./router/Routes";
 import {useAuth} from "./hooks/auth.hook";
 import {AuthContext} from "./context/AuthContext";
 import {useEffect, useState} from "react";

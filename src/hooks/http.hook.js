@@ -36,6 +36,7 @@ export const useHttp = () => {
                     token: data.access_token,
                     user: auth.user
                 }))
+                headers["Authorization"] = `Bearer ${auth.token}`
                 response = await fetch(url, {method, body, headers})
                 data = await response.json()
             }

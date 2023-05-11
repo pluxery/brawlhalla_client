@@ -8,7 +8,7 @@ import {useHttp} from '../../hooks/http.hook'
 import {useNavigate} from "react-router-dom";
 
 const Login = () => {
-    const authContext = useContext(AuthContext)
+    const auth = useContext(AuthContext)
     const {request} = useHttp()
     const navigate = useNavigate()
     const [form, setForm] = useState({
@@ -21,7 +21,7 @@ const Login = () => {
         e.preventDefault()
         try {
             const data = await request('/auth/login', 'POST', {...form})
-            authContext.login(data.access_token, data.user.original)
+            auth.login(data.access_token, data.user.original)
             navigate('/posts')
         } catch (e) {
 

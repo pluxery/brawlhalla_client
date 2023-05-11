@@ -10,17 +10,28 @@ const CreatePost = () => {
         title: '',
         content: '',
         category: '',
+        tags: ''
     })
     const changeInputHandler = event => {
         setForm({...form, [event.target.name]: event.target.value})
     }
+    function filterObject(obj) {
+        return Object.fromEntries(Object.entries(obj).filter(([key, val]) => val !== ''));
+    }
+
+    function tagsToArray(str) {
+        return str.split('#').filter(item => item !== '')
+    }
     const createPostOnClick = async (e) => {
         e.preventDefault()
         try {
-            await request('/posts', 'POST', {...form})
+            if (form.tags) {
+                form.tags = tagsToArray(form.tags)
+            }
+            const filterForm = filterObject(form)
+            await request('/posts', 'POST', {...filterForm})
             navigate('/posts')
         } catch (e) {
-
             console.log(e.message)
         }
 
@@ -58,7 +69,10 @@ const CreatePost = () => {
 
             <div className="mb-3">
                 <label htmlFor="exampleFormControlInput1" className="form-label">tags</label>
-                <input type="text" className="form-control" id="tags" name={'tags'} value={''}
+                <input type="text" className="form-control"
+                       id="tags" name={'tags'}
+                       onChange={changeInputHandler}
+                       value={form.tags}
                        placeholder="#tag1 #tag2 #tag3"/>
             </div>
 
