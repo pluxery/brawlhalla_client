@@ -1,11 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
 import '../../styles/Profile.css'
-import {useHttp} from "../../hooks/http.hook";
+import {API_URI, useHttp} from "../../hooks/http.hook";
 import {Button} from 'react-bootstrap';
 import {NavLink, useParams} from "react-router-dom";
-import ProfilePostList from "./components/ProfilePostList";
 import Loader from "../../components/Loader/Loader";
 import {AuthContext} from "../../context/AuthContext";
+import axios from "axios";
 
 
 const Profile = ({children}) => {
@@ -14,6 +14,33 @@ const Profile = ({children}) => {
     const {id} = useParams()
     const [user, setUser] = useState({});
     const auth = useContext(AuthContext)
+
+    const [IsSubscribtioned, setIsSubscribtioned] = useState(false)
+
+    const subscriptionOnClick = async (e) => {
+        e.preventDefault()
+        try {
+            await request(`/subscriptions/${user.id}/add`)
+            setIsSubscribtioned(true)
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
+
+    const unsubscriptionOnClick = async (e) => {
+        e.preventDefault()
+        try {
+            await axios.delete(`${API_URI}/subscriptions/${user.id}/delete`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${auth.token}`
+                    }
+                })
+            setIsSubscribtioned(false)
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
 
 
     useEffect(() => {
@@ -27,7 +54,7 @@ const Profile = ({children}) => {
 
             getUserProfile().then(result => setUser(result.data))
         },
-        [id, request, setUser]);
+        [id, request, setUser, setIsSubscribtioned]);
 
     if (loading) {
         return <Loader/>
@@ -52,10 +79,16 @@ const Profile = ({children}) => {
                                                 <p className="m-b-10">{user.email}</p>
                                                 {user.id === auth.user.id ?
                                                     <Button className="btn-success">Редактировать профиль</Button> :
-                                                    <Button className="btn-success">Добавить в друзья</Button>
+                                                    <>
+                                                        {IsSubscribtioned ?
+                                                            <Button className="btn-danger"
+                                                                    onClick={unsubscriptionOnClick}>Отписаться</Button> :
+                                                            <Button className="btn-success"
+                                                                    onClick={subscriptionOnClick}>Подписаться</Button>
+                                                        }
+                                                    </>
                                                 }
                                             </div>
-
                                         </div>
                                         <ul className="profile-header-tab nav nav-tabs">
                                             <li className="nav-item">
@@ -66,8 +99,8 @@ const Profile = ({children}) => {
                                             </li>
                                             <li className="nav-item">
                                                 <NavLink className="nav-link_"
-                                                         to={`/profile/${user.id}/friends`}>
-                                                    Друзья
+                                                         to={`/profile/${user.id}/subscriptions`}>
+                                                    Подписки
                                                 </NavLink>
                                             </li>
                                             <li className="nav-item">
