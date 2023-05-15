@@ -1,51 +1,77 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {NavLink, useNavigate, useParams} from "react-router-dom";
-import {Button} from 'react-bootstrap';
+import React, { useContext, useEffect, useState } from 'react';
+import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { Button } from 'react-bootstrap';
 import '../../styles/PostShow.css'
-import {API_URI, useHttp} from "../../hooks/http.hook";
+import { API_URI, useHttp } from "../../hooks/http.hook";
 import Loader from "../../components/Loader/Loader";
-import {AuthContext} from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
+import CommentCard from "../../components/CommentCard/CommentCard";
+import UnauthorizedAlert from "../../components/UnauthorizedAlert";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import ModeCommentIcon from "@mui/icons-material/ModeComment";
+import { pink } from "@mui/material/colors";
+import ProfileCard from "../../components/AuthorSidebar/ProfileCard";
+import PostService from '../../API/PostService';
 
 const ShowPost = () => {
     const auth = useContext(AuthContext)
-    const params = useParams();
-    const postId = params.id;
-    const [post, setPost] = useState({});
-    const {request, loading} = useHttp()
-    const navigate = useNavigate()
-    useEffect(() => {
-        async function getPostById() {
-            return await request(`/posts/${postId}`)
-        }
+    const { id } = useParams();
+    const [load, setLoad] = useState(true)
+    const [post, setPost] = useState(
+        {
+            text: '',
+            description: '',
+            content: '',
+            category: {},
+            tags: [],
+            author: {},
+            likes: [],
+            comments: [],
+            created_at: ''
+        });
 
-        getPostById().then(r => setPost(r.data))
-    }, [postId, request, setPost]);
+    const navigate = useNavigate()
+    const [isLiked, setIsLiked] = useState(false)
+
+    const [form, setForm] = useState({ text: null })
+
+    const changeInputHandler = event => {
+        setForm({ ...form, [event.target.name]: event.target.value })
+    }
+    useEffect(() => {
+        PostService.getPostById(id).then(r => {
+            setPost(r.data)
+            setIsLiked(post.likes.find(element => element.author.id === auth.user.id))
+            console.log(isLiked)
+            setLoad(false)
+        }
+        )
+
+    }, [setIsLiked, id, setPost]);
 
     const deletePostOnclick = async (e) => {
-        e.preventDefault()
-        try {
-            await axios.delete(`${API_URI}/posts/${post.id}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${auth.token}`
-                    }
-                })
-            navigate(`/profile/${auth.user.id}`)
-        } catch (e) {
-            console.log(e.message)
-        }
+        PostService.deletePostById(post.id, auth.token)
+        navigate(`/profile/${auth.user.id}`)
+    }
+
+    const addCommentOnClick = async (e) => {
+        PostService.addComment(post.id, form, auth.token)
+    }
+
+    const toggleLikeOnClick = async (e) => {
+        PostService.toggleLikePost(post.id, auth.token)
+        setIsLiked(!isLiked)
     }
 
 
-    if (loading) {
-        return <Loader/>
+    if (load) {
+        return <Loader />
     } else {
         return (
             <>
                 <div className="header">
                     <h2>{post.title}</h2>
-
                 </div>
                 <div className="row">
                     <div className="leftcolumn">
@@ -56,58 +82,67 @@ const ShowPost = () => {
                                 <img
                                     src="https://cdn2.unrealengine.com/atla-productart-1920x1080-1920x1080-477cda5a5a30.jpg"
                                     className="card-img-top rounded mx-auto d-block" alt="..."
-                                    style={{height: 420, width: 680}}/>
+                                    style={{ height: 420, width: 680 }} />
                             </div>
                             <p>{post.content}</p>
                         </div>
 
                         <div>
-                            {post.comments?.map(item => (
-                                <div className="card">
-                                    <div className="card-header">
-                                        {item.created_at}
+                            {
+                                auth.isAuthenticated ? <>
+                                    <div className="container text-start">
+                                        <span onClick={toggleLikeOnClick}>
+                                            {post.likes.length}
+                                            {isLiked ?
+                                                <FavoriteIcon sx={{ color: pink[500] }} /> :
+                                                <FavoriteIcon />}
+                                        </span>
+                                        <span>
+                                            {post.comments.length}<ModeCommentIcon />
+                                        </span>
                                     </div>
-                                    <div className="card-body">
-                                        <NavLink to={`/profile/${item.author?.id}`}>
-                                            <h5 className="card-title">{item.author?.name}</h5>
-                                        </NavLink>
-                                        <p className="card-text">{item.text}</p>
+                                    <div className="card">
+                                        <h5 className="card-header">{auth.user.name}</h5>
+                                        <div className="card-body">
+                                            <div className="mb-3">
+                                                <textarea className="form-control"
+                                                    rows='3'
+                                                    id={'text'}
+                                                    name={'text'}
+                                                    placeholder={'Поделитесь вашем мнением'}
+                                                    value={form.text}
+                                                    onChange={changeInputHandler}>
+                                                </textarea>
+                                            </div>
+                                            <Button className={'btn-success'} onClick={addCommentOnClick}>
+                                                Оставить комментарий
+                                            </Button>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                </> : <UnauthorizedAlert />
+
+                            }
+                            {post.comments.map(item => {
+                                return <CommentCard comment={item} />
+                            })}
+
                         </div>
 
 
                     </div>
                     <div className="rightcolumn">
-                        <div className="card">
-                            <h3>{post.author?.name}</h3>
-                            <img
-                                src={'https://play-lh.googleusercontent.com/PZeSw1BuUf8swSbIxF3JNE0t-_4My6hbhdnCLucQZgYLrSe0IDaAMi4r83g6drKg2knm'}
-                                alt={'...'} style={{
-                                width: 100, height: 100
-                            }}
-                                className={'rounded mx-auto d-block'}/>
-                            <p>{post.author?.email}</p>
-                            <NavLink to={`/profile/${post.author?.id}`}>
-                                <Button className={'btn-success'}>Go to profile</Button>
-                            </NavLink>
-                        </div>
-                        {post.author?.id === auth.user.id ?
+                        <ProfileCard author={post.author} />
+                        {post.author.id === auth.user.id ?
 
                             <div className="card">
                                 <NavLink to={`/posts/${post.id}/edit`} className={'btn btn-success mb-3'}>
                                     Редактировать запись
                                 </NavLink>
 
-                                <Button onClick={deletePostOnclick}>
+                                <Button onClick={deletePostOnclick} className='btn-danger'>
                                     Удалить запись
                                 </Button>
-                                <NavLink to={`/posts/${post.id}/delete`} className={'btn btn-danger'}>
-                                    Удалить запись
-                                </NavLink>
                             </div> : null}
-
 
                         <div className="card">
                             <h3>Popular Post</h3>
@@ -115,6 +150,7 @@ const ShowPost = () => {
                             <div className="fakeimg">Image</div>
                             <div className="fakeimg">Image</div>
                         </div>
+
                     </div>
                 </div>
 

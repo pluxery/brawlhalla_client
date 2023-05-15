@@ -1,5 +1,7 @@
 import React from 'react';
 import {NavLink} from "react-router-dom";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ModeCommentIcon from '@mui/icons-material/ModeComment';
 
 
 const PostCard = ({post}) => {
@@ -19,14 +21,15 @@ const PostCard = ({post}) => {
                 {post.category ? <>
                     <span>Категория:</span> <br/>
                     <NavLink to={`/posts/search/category/${post.category.id}`}>
-                        <span>{post.category.name}</span>
+                        <span>{post.category?.name}</span>
                     </NavLink>
                 </> : null
                 }
                 <div>
                     {post.tags?.map((tag, index) => (
                         index < 5 ?
-                            <NavLink to={`/posts/search/tag/${tag.id}`} className={'text-primary'}>#{tag.name} </NavLink>
+                            <NavLink to={`/posts/search/tag/${tag.id}`}
+                                     className={'text-primary'}>#{tag.name} </NavLink>
                             : null
                     ))}
                 </div>
@@ -40,6 +43,15 @@ const PostCard = ({post}) => {
                       btn-sm btn-block">
                 Посмотреть
             </NavLink>
+            <div className="container text-start">
+                    <span>
+                        {post.likes}<FavoriteIcon/>
+                    </span>
+                    <span>
+                        {post.comments}<ModeCommentIcon/>
+                    </span>
+                </div>
+
         </div>
     );
 };

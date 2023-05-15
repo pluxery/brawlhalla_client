@@ -1,20 +1,70 @@
 import axios from "axios";
+import { API_URI } from "../hooks/http.hook";
 
 
-export default  class PostService{
-    static async getAllPosts() {
-        const result = await axios('http://127.0.0.1:8000/api/posts',);
-        return result.data
+export default class PostService {
+
+    static _setTokenToHeader = (token) => {
+        return {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    }
+
+    static async getAllPosts(page = 1, query = '') {
+
+        try {
+            const { data } = await axios(`${API_URI}/posts?page=${page}${query}`,);
+            return data
+        } catch (e) {
+            console.log(e.message)
+        }
     };
 
     static async getPostById(id) {
-        const result = await axios(`http://127.0.0.1:8000/api/posts/${id}`);
-        return result.data
+        try {
+            const result = await axios(`${API_URI}/posts/${id}`);
+            return result.data
+        } catch (e) {
+            console.log(e.message)
+        }
     };
 
-    static async getPostsByTag(tag) {
-        const result = await axios(`http://127.0.0.1:8000/api/tags/${tag}`);
-        return result.data
-    };
+    static async editPostById(post, body, token) {
+        try {
+
+            await axios.patch(`${API_URI}/posts/${post.id}`, { ...body }, this._setTokenToHeader(token)
+            )
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
+
+    static async deletePostById(id, token) {
+        try {
+            await axios.delete(`${API_URI}/posts/${id}`, this._setTokenToHeader(token)
+            )
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
+
+    static async toggleLikePost(id, token) {
+        try {
+            await axios(`${API_URI}/posts/${id}/like`, this._setTokenToHeader(token)
+            )
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
+
+    static async addComment(id, body, token) {
+        try {
+            await axios.post(`${API_URI}/posts/${id}/comment`, { ...body }, this._setTokenToHeader(token))
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
 
 }

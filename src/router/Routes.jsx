@@ -17,6 +17,7 @@ import Subscriptions from "../pages/Profile/components/Subscriptions";
 import ProfileAbout from "../pages/Profile/components/ProfileAbout";
 import ProfilePostList from "../pages/Profile/components/ProfilePostList";
 import React from "react";
+import LikedPosts from "../pages/Profile/components/LikedPosts";
 
 
 
@@ -29,6 +30,7 @@ export const useRoutes = (isAuthenticated) => {
                 <Route path={'/profile/:id'} element={<Layout children={<Profile children={<ProfilePostList/>}/>}/>}/>
                 <Route path={'/profile/:id/subscriptions'} element={<Layout children={<Profile children={<Subscriptions/>}/>}/>}/>
                 <Route path={'/profile/:id/about'} element={<Layout children={<Profile children={<ProfileAbout/>}/>}/>}/>
+                <Route path={'/profile/:id/liked'} element={<Layout children={<Profile children={<LikedPosts/>}/>}/>}/>
 
 
 
@@ -56,11 +58,16 @@ export const useRoutes = (isAuthenticated) => {
         return (
             <Routes>
                 <Route path={'/'} element={<AuthPage/>}/>
-                <Route path={'/profile/:id'} element={<Layout children={<Profile/>}/>}/>
+
+                <Route path={'/profile/:id'} element={<Layout children={<Profile children={<ProfilePostList/>}/>}/>}/>
+                <Route path={'/profile/:id/subscriptions'} element={<Layout children={<Profile children={<Subscriptions/>}/>}/>}/>
+                <Route path={'/profile/:id/about'} element={<Layout children={<Profile children={<ProfileAbout/>}/>}/>}/>
+
                 <Route path={'/posts'} element={<Layout children={<IndexPost/>}/>}/>
                 <Route path={'/posts/search/category/:category'} element={<Layout children={<IndexPost/>}/>}/>
                 <Route path={'/posts/search/author/:author'} element={<Layout children={<IndexPost/>}/>}/>
                 <Route path={'/posts/:id'} element={<Layout children={<ShowPost/>}/>}/>
+
                 <Route path={'/news'} element={<Layout children={<News/>}/>}/>
                 <Route path={'/legends'} element={<Layout children={<Legends/>}/>}/>
                 <Route path={'/weapons'} element={<Layout children={<IndexWeapon/>}/>}/>

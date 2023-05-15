@@ -1,21 +1,24 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import PostCard from "../../components/PostCard/PostCard";
 import '../../styles/Posts.css'
 
 
-import {NavLink, useParams} from "react-router-dom";
-import {Button} from "react-bootstrap";
+import { NavLink, useParams } from "react-router-dom";
+import { Button } from "react-bootstrap";
 import AddIcon from '@mui/icons-material/Add';
-import {AuthContext} from "../../context/AuthContext";
-import {useHttp} from "../../hooks/http.hook";
+import { AuthContext } from "../../context/AuthContext";
+import { useHttp } from "../../hooks/http.hook";
 import Loader from "../../components/Loader/Loader";
 import PostList from "../../components/PostList/PostList";
+import { STORAGE } from "../../hooks/auth.hook";
+import UnauthorizedAlert from "../../components/UnauthorizedAlert";
+import PostService from '../../API/PostService';
 
 const IndexPost = () => {
     const [posts, setPosts] = useState([]);
     const [paginator, setPaginator] = useState({})
     const auth = useContext(AuthContext)
-    const {request, loading} = useHttp()
+    const [load, setLoad] = useState(true)
     const params = useParams()
     const [page, setPage] = useState(1)
 
@@ -62,32 +65,28 @@ const IndexPost = () => {
     }
 
     useEffect(() => {
-        try {
-            async function getAllPosts() {
-                const querySearch = buildQuerySearch()
-                return await request(`/posts?page=${page}${querySearch}`)
-            }
-
-            getAllPosts().then(r => {
-                setPosts(r.data)
-                setPaginator(r.meta)
-            })
-        } catch (e) {
-            console.log(e.message)
-        }
-    }, [page, params, request, setPosts]);
+        PostService.getAllPosts(page, buildQuerySearch()).then(r => {
+            setPosts(r.data)
+            setPaginator(r.meta)
+            setLoad(false)
+        })
+    }, [page, params, setPosts]);
 
 
-    if (loading) {
-        return <Loader/>
+    if (load) {
+        return <Loader />
     } else {
         return (
             <>
-                {auth.token ? <NavLink to={'/posts/create'}>
-                    <Button className={'mt-2 btn-success'}>Создать статью<AddIcon/></Button>
-                </NavLink> : null}
+                {auth.isAuthenticated ?
+                    <NavLink to={'/posts/create'}>
+                        <Button className={'mt-2 btn-success'}>Создать статью<AddIcon />
+                        </Button>
+                    </NavLink> :
+                    <UnauthorizedAlert />
+                }
                 <h1>Последние:</h1>
-                <PostList posts={posts}/>
+                <PostList posts={posts} />
 
                 <div className={'container mt-5'}>
 
@@ -95,14 +94,14 @@ const IndexPost = () => {
                         <ul className="pagination">
                             <li className="page-item">
                                 <Button className="page-link" aria-label="Previous"
-                                        onClick={firstPageOnClick}>
+                                    onClick={firstPageOnClick}>
                                     <span aria-hidden="true">&laquo;</span>
                                 </Button>
                             </li>
                             {page > 2 ?
                                 <li className="page-item">
                                     <Button className="page-link"
-                                            onClick={prevPageOnClick}>
+                                        onClick={prevPageOnClick}>
                                         <span aria-hidden="true">{page - 1}</span>
                                     </Button>
                                 </li> : null
@@ -115,14 +114,14 @@ const IndexPost = () => {
                             {page < paginator.last_page ?
                                 <li className="page-item">
                                     <Button className="page-link"
-                                            onClick={nextPageOnClick}>
+                                        onClick={nextPageOnClick}>
                                         <span aria-hidden="true">{page + 1}</span>
                                     </Button>
                                 </li> : null
                             }
                             <li className="page-item">
                                 <Button className="page-link" aria-label="Next"
-                                        onClick={lastPageOnClick}>
+                                    onClick={lastPageOnClick}>
                                     <span aria-hidden="true">&raquo;</span>
                                 </Button>
                             </li>
