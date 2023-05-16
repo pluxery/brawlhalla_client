@@ -12,6 +12,16 @@ export default class UserService {
         }
     }
 
+    static async getMe(token){
+        try {
+            const { data } = await axios.get(`${API_URI}/auth/me`, this._setTokenToHeader(token))
+            return data
+        } catch (e) {
+            console.log(e.message)
+        }
+
+    }
+
     static async getUserById(id, token) {
         try {
             const { data } = await axios.get(`${API_URI}/users/${id}`, this._setTokenToHeader(token))
@@ -49,7 +59,16 @@ export default class UserService {
 
     static async getLikedPosts(userId , token) {
         try {
-            const { data } = await axios.get(`${API_URI}/users/${userId}/liked_posts`, this._setTokenToHeader(token))
+            const { data } = await axios.get(`${API_URI}/users/${userId}/liked_posts`,  this._setTokenToHeader(token))
+            return data
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
+
+    static async updateProfile(id, token, body) {
+        try {
+            const { data } = await axios.patch(`${API_URI}/user/${id}/edit`, {...body}, this._setTokenToHeader(token))
             return data
         } catch (e) {
             console.log(e.message)

@@ -6,8 +6,6 @@ import {Button} from 'react-bootstrap';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import {useHttp} from "../../hooks/http.hook";
 import {useState} from "react";
-import {Alert, AlertTitle} from "@mui/material";
-import UnauthorizedAlert from "../../components/UnauthorizedAlert";
 
 
 const Header = () => {

@@ -7,7 +7,7 @@ import Loader from "../../components/Loader/Loader";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import CommentCard from "../../components/CommentCard/CommentCard";
-import UnauthorizedAlert from "../../components/UnauthorizedAlert";
+import UnauthorizedAlert from "../../components/Alerts/UnauthorizedAlert";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ModeCommentIcon from "@mui/icons-material/ModeComment";
 import { pink } from "@mui/material/colors";

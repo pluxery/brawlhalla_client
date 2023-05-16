@@ -11,7 +11,7 @@ import { useHttp } from "../../hooks/http.hook";
 import Loader from "../../components/Loader/Loader";
 import PostList from "../../components/PostList/PostList";
 import { STORAGE } from "../../hooks/auth.hook";
-import UnauthorizedAlert from "../../components/UnauthorizedAlert";
+import UnauthorizedAlert from "../../components/Alerts/UnauthorizedAlert";
 import PostService from '../../API/PostService';
 
 const IndexPost = () => {

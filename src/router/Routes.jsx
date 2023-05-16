@@ -18,6 +18,7 @@ import ProfileAbout from "../pages/Profile/components/ProfileAbout";
 import ProfilePostList from "../pages/Profile/components/ProfilePostList";
 import React from "react";
 import LikedPosts from "../pages/Profile/components/LikedPosts";
+import EditProfile from "../pages/Profile/EditProfile";
 
 
 
@@ -28,6 +29,7 @@ export const useRoutes = (isAuthenticated) => {
                 <Route path={'/'} element={<Layout children={<IndexPost/>}/>}/>
 
                 <Route path={'/profile/:id'} element={<Layout children={<Profile children={<ProfilePostList/>}/>}/>}/>
+                <Route path={'/profile/edit'} element={<Layout children={<EditProfile/>}/>}/>
                 <Route path={'/profile/:id/subscriptions'} element={<Layout children={<Profile children={<Subscriptions/>}/>}/>}/>
                 <Route path={'/profile/:id/about'} element={<Layout children={<Profile children={<ProfileAbout/>}/>}/>}/>
                 <Route path={'/profile/:id/liked'} element={<Layout children={<Profile children={<LikedPosts/>}/>}/>}/>

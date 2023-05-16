@@ -5,7 +5,7 @@ import { NavLink, useParams } from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
 import { AuthContext } from "../../context/AuthContext";
 
-import UnauthorizedAlert from "../../components/UnauthorizedAlert";
+import UnauthorizedAlert from "../../components/Alerts/UnauthorizedAlert";
 import UserService from '../../API/UserService';
 import { Avatar } from '@mui/material';
 
@@ -61,7 +61,7 @@ const Profile = ({ children }) => {
                                                 <h4 className="m-t-10 m-b-5">{user.name}</h4>
                                                 <p className="m-b-10">{user.email}</p>
                                                 {user.id === auth.user.id ?
-                                                    <Button className="btn-success">Редактировать профиль</Button> :
+                                                    <NavLink to={'/profile/edit'} className=" btn btn-success">Редактировать профиль</NavLink> :
                                                     <>
                                                         {isSubscribed ?
                                                             <Button className="btn-danger"
