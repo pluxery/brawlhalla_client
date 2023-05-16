@@ -17,25 +17,25 @@ const Profile = ({ children }) => {
 
     const [load, setLoad] = useState(true)
 
-    const [IsSubscribtioned, setIsSubscribtioned] = useState(false)
+    const [isSubscribed, setIsSubscribed] = useState(false)
 
     const subscriptionOnClick = async (e) => {
         e.preventDefault()
         UserService.subscribe(id, auth.token)
-        setIsSubscribtioned(true)
+        setIsSubscribed(true)
     }
 
     const unsubscriptionOnClick = async (e) => {
         e.preventDefault()
         UserService.unsubscribe(user.id, auth.token)
-        setIsSubscribtioned(false)
+        setIsSubscribed(false)
     }
 
 
     useEffect(() => {
         UserService.getUserById(id, auth.token).then(r => setUser(r.data))
         setLoad(false)
-    }, [id, setUser, setIsSubscribtioned, setLoad]);
+    }, [id, setUser, setIsSubscribed, setLoad]);
 
     if (load) {
         return <Loader />
@@ -63,7 +63,7 @@ const Profile = ({ children }) => {
                                                 {user.id === auth.user.id ?
                                                     <Button className="btn-success">Редактировать профиль</Button> :
                                                     <>
-                                                        {IsSubscribtioned ?
+                                                        {isSubscribed ?
                                                             <Button className="btn-danger"
                                                                 onClick={unsubscriptionOnClick}>Отписаться</Button> :
                                                             <Button className="btn-success"
