@@ -27,7 +27,7 @@ const Profile = ({ children }) => {
 
     const unsubscriptionOnClick = async (e) => {
         e.preventDefault()
-        UserService.unsubscribe(user.id, auth.token)
+        await UserService.unsubscribe(user.id, auth.token)
         setIsSubscribed(false)
     }
 
