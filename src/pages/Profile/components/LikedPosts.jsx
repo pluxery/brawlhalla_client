@@ -23,7 +23,7 @@ const LikedPosts = () => {
     return (
         <>
             {posts?.map(item => {
-                return <PostCard post={item} />
+                //return <PostCard post={item} />
             })}
 
         </>
