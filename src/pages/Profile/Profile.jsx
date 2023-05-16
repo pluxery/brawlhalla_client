@@ -21,7 +21,7 @@ const Profile = ({ children }) => {
 
     const subscriptionOnClick = async (e) => {
         e.preventDefault()
-        UserService.subscribe(id, auth.token)
+        await UserService.subscribe(id, auth.token)
         setIsSubscribed(true)
     }
 
