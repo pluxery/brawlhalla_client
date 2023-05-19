@@ -4,7 +4,7 @@ import Register from "../pages/Auth/Register";
 import IndexPost from "../pages/Post/IndexPost";
 import News from "../pages/News/News";
 import About from "../pages/About";
-import Legends from "../pages/Legend/Legends";
+import IndexLegend from "../pages/Legend/IndexLegend";
 import IndexWeapon from "../pages/Weapon/IndexWeapon";
 import CreatePost from "../pages/Post/CreatePost";
 import EditPost from "../pages/Post/EditPost";
@@ -19,6 +19,7 @@ import ProfilePostList from "../pages/Profile/components/ProfilePostList";
 import React from "react";
 import LikedPosts from "../pages/Profile/components/LikedPosts";
 import EditProfile from "../pages/Profile/EditProfile";
+import ShowLegend from "../pages/Legend/ShowLegend";
 
 
 
@@ -47,7 +48,9 @@ export const useRoutes = (isAuthenticated) => {
                 <Route path={'/posts/:id/delete'} element={<Layout children={<EditPost/>}/>}/>
                 <Route path={'/news'} element={<Layout children={<News/>}/>}/>
 
-                <Route path={'/legends'} element={<Layout children={<Legends/>}/>}/>
+                <Route path={'/legends'} element={<Layout children={<IndexLegend/>}/>}/>
+                <Route path={'/legends/:id'} element={<Layout children={<ShowLegend/>}/>}/>
+
                 <Route path={'/weapons'} element={<Layout children={<IndexWeapon/>}/>}/>
                 <Route path={'/weapons/:id'} element={<Layout children={<ShowWeapon/>}/>}/>
                 <Route path={'/about'} element={<Layout children={<About/>}/>}/>
@@ -71,7 +74,10 @@ export const useRoutes = (isAuthenticated) => {
                 <Route path={'/posts/:id'} element={<Layout children={<ShowPost/>}/>}/>
 
                 <Route path={'/news'} element={<Layout children={<News/>}/>}/>
-                <Route path={'/legends'} element={<Layout children={<Legends/>}/>}/>
+
+                <Route path={'/legends'} element={<Layout children={<IndexLegend/>}/>}/>
+                <Route path={'/legends/:id'} element={<Layout children={<ShowLegend/>}/>}/>
+
                 <Route path={'/weapons'} element={<Layout children={<IndexWeapon/>}/>}/>
                 <Route path={'/weapons/:id'} element={<Layout children={<ShowWeapon/>}/>}/>
                 <Route path={'/about'} element={<Layout children={<About/>}/>}/>

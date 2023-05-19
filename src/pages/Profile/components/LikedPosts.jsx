@@ -1,32 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { useHttp } from "../../../hooks/http.hook";
+import React, {useEffect, useState} from 'react';
+import {useHttp} from "../../../hooks/http.hook";
 
 
 import Loader from "../../../components/Loader/Loader";
 
 import UserService from '../../../API/UserService';
-import { AuthContext } from '../../../context/AuthContext';
-import { useContext } from 'react';
+import {AuthContext} from '../../../context/AuthContext';
+import {useContext} from 'react';
 import PostCard from '../../../components/PostCard/PostCard';
-import { useParams } from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 
 const LikedPosts = () => {
     const auth = useContext(AuthContext)
     const [posts, setPosts] = useState([]);
-    const { id } = useParams()
+    const {id} = useParams()
 
     useEffect(() => {
-        UserService.getLikedPosts(id, auth.token).then(r => setPosts(r))
-    }, [auth, setPosts])
+        UserService.getLikedPosts(id, auth.token).then(r => setPosts(r.data))
+    }, [id, auth, setPosts])
 
 
     return (
-        <>
-            {posts?.map(item => {
-                //return <PostCard post={item} />
+        <div className={'container-sm'}>
+            {posts?.map((item) => {
+                return <PostCard post={item}/>
             })}
-
-        </>
+        </div>
     );
 
 };

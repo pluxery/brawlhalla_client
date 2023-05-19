@@ -38,26 +38,23 @@ const EditProfile = () => {
     })
 
     const validateForm = (_form) => {
-        setMessage('error data')
-        return false
+
     }
     const setRankImage = (elo) => {
         return 0
     }
-    const [message, setMessage] = useState('ss')
+    const [message, setMessage] = useState('')
     const [visibleAlert, setVisibleAlert] = useState(false)
     const updateProfile = async (e) => {
         e.preventDefault()
-        if (message) {
+        const result = await UserService.updateProfile(auth.user.id, auth.token, filteredForm(form))
+        if (result) {
+            setMessage(result.message)
             setVisibleAlert(true)
+        } else {
+            console.log("result =", result)
+            //navigate(`/profile/${auth.user.id}`)
         }
-        if (validateForm(filteredForm(form))) {
-            await UserService.updateProfile(auth.token, form)
-            navigate(`/profile/${auth.user.id}`)
-
-        }
-        console.log(filteredForm(form))
-
     }
 
     useEffect(() => {

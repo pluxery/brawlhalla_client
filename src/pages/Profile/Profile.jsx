@@ -77,7 +77,7 @@ const Profile = ({ children }) => {
                                             <li className="nav-item">
                                                 <NavLink className="nav-link_"
                                                     to={`/profile/${user.id}`}>
-                                                    Мои записи
+                                                    Мои посты
                                                 </NavLink>
                                             </li>
                                             <li className="nav-item">

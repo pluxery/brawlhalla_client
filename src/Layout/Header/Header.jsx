@@ -6,27 +6,22 @@ import {Button} from 'react-bootstrap';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import {useHttp} from "../../hooks/http.hook";
 import {useState} from "react";
+import UserService from "../../API/UserService";
 
 
 const Header = () => {
     const auth = useContext(AuthContext)
-    const {request} = useHttp()
 
     const [username, setUsername] = useState('')
     const logoutOnClick = () => {
-        async function logout() {
-            return await request('/auth/logout')
-        }
-
-        logout().then(() => auth.logout())
+        UserService.logout(auth.token).then(() => auth.logout())
     }
 
     useEffect(() => {
         setUsername(auth.user.name)
     }, [auth])
 
-    return (
-        <>
+    return (<>
             <div className={'header__wrapper'}>
                 <div>
                     <NavLink className={'header__link'} to={'/posts'}>Посты</NavLink>
@@ -37,26 +32,24 @@ const Header = () => {
                 </div>
 
                 <div>
-                    {auth.isAuthenticated ?
-                        <>
-                            <NavLink className={'header__link'} to={`/profile/${auth.user.id}`}>
-                                {username}
-                                <AccountBoxIcon/>
-                            </NavLink>
+                    {auth.isAuthenticated ? <>
+                        <NavLink className={'header__link'} to={`/profile/${auth.user.id}`}>
+                            {username}
+                            <AccountBoxIcon/>
+                        </NavLink>
 
-                            <NavLink to={'/'}>
-                                <Button className={'btn-danger'}
-                                        onClick={logoutOnClick}>
-                                    Выйти
-                                </Button>
-                            </NavLink>
+                        <NavLink to={'/'}>
+                            <Button className={'btn-danger'}
+                                    onClick={logoutOnClick}>
+                                Выйти
+                            </Button>
+                        </NavLink>
 
-                        </> : null}
+                    </> : null}
                 </div>
 
             </div>
-        </>
-    );
+        </>);
 };
 
 export default Header;

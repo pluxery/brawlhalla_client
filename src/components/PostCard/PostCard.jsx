@@ -1,12 +1,23 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {NavLink} from "react-router-dom";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
+import PostService from "../../API/PostService";
+import {AuthContext} from "../../context/AuthContext";
+import {pink} from "@mui/material/colors";
 
 
 const PostCard = ({post}) => {
-    return (
-        <div className="card">
+
+    const auth = useContext(AuthContext)
+
+
+    const [isLiked, setIsLiked] = useState(false)
+    const toggleLikeOnClick = async (e) => {
+        await PostService.toggleLikePost(post.id, auth.token)
+        setIsLiked(!isLiked)
+    }
+    return (<div className="card">
             <div className={'flex-column '}>
                 <NavLink to={`/posts/search/author/${post.author.id}`} className={'text-primary'}>
                     <span>{post.author.name}</span>
@@ -23,15 +34,10 @@ const PostCard = ({post}) => {
                     <NavLink to={`/posts/search/category/${post.category.id}`}>
                         <span>{post.category?.name}</span>
                     </NavLink>
-                </> : null
-                }
+                </> : null}
                 <div>
-                    {post.tags?.map((tag, index) => (
-                        index < 5 ?
-                            <NavLink to={`/posts/search/tag/${tag.id}`}
-                                     className={'text-primary'}>#{tag.name} </NavLink>
-                            : null
-                    ))}
+                    {post.tags?.map((tag, index) => (index < 5 ? <NavLink to={`/posts/search/tag/${tag.id}`}
+                                                                          className={'text-primary'}>#{tag.name} </NavLink> : null))}
                 </div>
 
                 <div>
@@ -44,16 +50,24 @@ const PostCard = ({post}) => {
                 Посмотреть
             </NavLink>
             <div className="container text-start">
-                    <span>
-                        {post.likes}<FavoriteIcon/>
+                    <span onClick={toggleLikeOnClick}>
+                         {isLiked ?
+                             <>
+                                 {post.likes}
+                                 <FavoriteIcon sx={{color: pink[500]}}/>
+                             </> :
+                             <>
+                                 {post.likes}
+                                 <FavoriteIcon/>
+                             </>
+                         }
                     </span>
-                    <span>
+                <span>
                         {post.comments}<ModeCommentIcon/>
                     </span>
-                </div>
+            </div>
 
-        </div>
-    );
+        </div>);
 };
 
 export default PostCard;

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URI } from "../hooks/http.hook";
+import {API_URI} from "../hooks/http.hook";
 
 
 export default class UserService {
@@ -12,9 +12,17 @@ export default class UserService {
         }
     }
 
-    static async getMe(token){
+    static async logout(token) {
         try {
-            const { data } = await axios.get(`${API_URI}/auth/me`, this._setTokenToHeader(token))
+            await axios.get(`${API_URI}/auth/logout`, this._setTokenToHeader(token))
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
+
+    static async getMe(token) {
+        try {
+            const {data} = await axios.get(`${API_URI}/auth/me`, this._setTokenToHeader(token))
             return data
         } catch (e) {
             console.log(e.message)
@@ -24,7 +32,7 @@ export default class UserService {
 
     static async getUserById(id, token) {
         try {
-            const { data } = await axios.get(`${API_URI}/users/${id}`, this._setTokenToHeader(token))
+            const {data} = await axios.get(`${API_URI}/users/${id}`, this._setTokenToHeader(token))
             return data
         } catch (e) {
             console.log(e.message)
@@ -50,16 +58,16 @@ export default class UserService {
 
     static async getSubscriptions(id) {
         try {
-            const { data } = await axios.get(`${API_URI}/users/${id}/subscriptions`)
+            const {data} = await axios.get(`${API_URI}/users/${id}/subscriptions`)
             return data
         } catch (e) {
             console.log(e.message)
         }
     }
 
-    static async getLikedPosts(userId , token) {
+    static async getLikedPosts(userId, token) {
         try {
-            const { data } = await axios.get(`${API_URI}/users/${userId}/liked_posts`,  this._setTokenToHeader(token))
+            const {data} = await axios.get(`${API_URI}/users/${userId}/liked_posts`, this._setTokenToHeader(token))
             return data
         } catch (e) {
             console.log(e.message)
@@ -68,14 +76,12 @@ export default class UserService {
 
     static async updateProfile(id, token, body) {
         try {
-            const { data } = await axios.patch(`${API_URI}/user/${id}/edit`, {...body}, this._setTokenToHeader(token))
+            const {data} = await axios.patch(`${API_URI}/users/${id}`, {...body}, this._setTokenToHeader(token))
             return data
         } catch (e) {
             console.log(e.message)
         }
     }
-
-
 
 
 }
