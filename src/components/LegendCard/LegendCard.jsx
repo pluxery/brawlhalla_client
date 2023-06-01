@@ -4,10 +4,10 @@ import {Button} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
 
 const LegendCard = ({legend}) => {
-
+    const img = "https://www.brawlhalla.com/c/uploads/2021/07/bodvar.png"
     return (
         <div className="card mb-2" style={{width: "12rem", height: "16rem"}}>
-            <img src="https://www.brawlhalla.com/c/uploads/2021/07/bodvar.png" className="card-img-top" alt="..."/>
+            <img src={legend.image} className="card-img-top" alt="..."/>
             <div className="card-body">
                 <NavLink to={`/legends/${legend.id}`}>
                     <Button className={'btn-success'}>{legend.name}</Button>

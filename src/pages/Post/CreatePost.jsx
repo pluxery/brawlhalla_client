@@ -2,6 +2,7 @@ import React, {useContext, useState} from 'react';
 import {Button} from 'react-bootstrap'
 import {useHttp} from "../../hooks/http.hook";
 import {useNavigate} from "react-router-dom";
+import DangerAlert from "../../components/Alerts/DangerAlert";
 
 const CreatePost = () => {
     const {request} = useHttp()
@@ -12,6 +13,7 @@ const CreatePost = () => {
         category: '',
         tags: ''
     })
+    const [error, setError]  =useState()
     const changeInputHandler = event => {
         setForm({...form, [event.target.name]: event.target.value})
     }
@@ -32,6 +34,7 @@ const CreatePost = () => {
             await request('/posts', 'POST', {...filterForm})
             navigate('/posts')
         } catch (e) {
+            setError('Данные заполнены не корректно')
             console.log(e.message)
         }
 
@@ -40,6 +43,7 @@ const CreatePost = () => {
 
     return (
         <div className={'container-sm'}>
+            {error? <DangerAlert message={error}/>:null }
             <div className="mb-3">
                 <label htmlFor="formFileMultiple" className="form-label">Preview image</label>
                 <input className="form-control" type="file" id="formFileMultiple" multiple/>

@@ -22,27 +22,13 @@ export const useHttp = () => {
 
             let response = await fetch(`${API_URI}${url}`, {method, body, headers})
             let data = await response.json()
-
-            //TODO: протестировать обновление токена
-            if (response.status === 401) {
-                const refresh = await fetch(`${API_URI}/auth/refresh`,
-                    {
-                        method: 'POST',
-                        headers: `Bearer ${auth.token}`
-                    })
-                data = await refresh.json()
-                console.log("HTTP REFRESH!", data)
-                localStorage.setItem(STORAGE, JSON.stringify({
-                    token: data.access_token,
-                    user: auth.user
-                }))
-                headers["Authorization"] = `Bearer ${auth.token}`
-                response = await fetch(url, {method, body, headers})
-                data = await response.json()
-            }
-            if (!response.ok) {
+            if (!response.ok && response.status === 401) {
                 setError(data.message)
-                throw new Error(data.message || 'Что-то пошло не так')
+                throw new Error('Неверный логин или пароль!')
+            }
+            if (!response.ok && response.status === 422) {
+                setError(data.message)
+                throw new Error('Пользователь с такой почтой уже существует!')
             }
             setLoading(false)
             return data

@@ -5,7 +5,7 @@ import LegendService from "../../API/LegendService";
 import PostCard from "../../components/PostCard/PostCard";
 
 
-const Legends = () => {
+const IndexLegend = () => {
 
     const [legends, setLegends] = useState([]);
 
@@ -15,17 +15,15 @@ const Legends = () => {
 
 
     return (<>
-
-
-            <h1 style={{textAlign: "center"}}>Legends:</h1>
+            <h1 style={{textAlign: "center"}}>Персонажи</h1>
             <div className={'legends__wrapper'}>
                 {legends.map(item => (
                     <LegendCard legend={item} key={item.id}/>
                 ))}
             </div>
-        >
+            >
         </>
     );
 };
 
-export default Legends;
+export default IndexLegend;
