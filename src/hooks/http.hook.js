@@ -22,16 +22,19 @@ export const useHttp = () => {
 
             let response = await fetch(`${API_URI}${url}`, {method, body, headers})
             let data = await response.json()
-            if (!response.ok) {
+            if (!response.ok && response.status === 401) {
                 setError(data.message)
-                throw new Error(data.message || 'Что-то пошло не так')
+                throw new Error('Неверный логин или пароль!')
+            }
+            if (!response.ok && response.status === 422) {
+                setError(data.message)
+                throw new Error('Пользователь с такой почтой уже существует!')
             }
             setLoading(false)
             return data
         } catch (e) {
             setLoading(false)
             setError(e.message)
-            console.log('error in http.hook block catch\n', e.message)
             throw e
         }
     }, [auth.token, auth.user])

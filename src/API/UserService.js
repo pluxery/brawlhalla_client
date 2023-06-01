@@ -74,6 +74,7 @@ export default class UserService {
         }
     }
 
+
     static async updateProfile(id, token, body) {
         try {
             const {data} = await axios.patch(`${API_URI}/users/${id}`, {...body}, this._setTokenToHeader(token))

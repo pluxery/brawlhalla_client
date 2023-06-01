@@ -1,16 +1,16 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import PostCard from "../../components/PostCard/PostCard";
 import '../../styles/Posts.css'
 
 
-import { NavLink, useParams } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import {NavLink, useParams} from "react-router-dom";
+import {Button} from "react-bootstrap";
 import AddIcon from '@mui/icons-material/Add';
-import { AuthContext } from "../../context/AuthContext";
-import { useHttp } from "../../hooks/http.hook";
+import {AuthContext} from "../../context/AuthContext";
+import {useHttp} from "../../hooks/http.hook";
 import Loader from "../../components/Loader/Loader";
 import PostList from "../../components/PostList/PostList";
-import { STORAGE } from "../../hooks/auth.hook";
+import {STORAGE} from "../../hooks/auth.hook";
 import UnauthorizedAlert from "../../components/Alerts/UnauthorizedAlert";
 import PostService from '../../API/PostService';
 
@@ -36,33 +36,14 @@ const IndexPost = () => {
         return query
     }
 
-    const lastPageOnClick = async (e) => {
-        e.preventDefault()
-        setPage(paginator.last_page);
-    }
-    const firstPageOnClick = async (e) => {
-        e.preventDefault()
-        setPage(1);
+    function getPostsByPage(numPage) {
+        if (numPage > paginator.last_page)
+            numPage = paginator.last_page
+        if (numPage < 1)
+            numPage = 1
+        setPage(numPage)
     }
 
-    const nextPageOnClick = async (e) => {
-        e.preventDefault()
-        setPage((page) => {
-            if (page >= paginator.last_page) {
-                return paginator.last_page;
-            }
-            return page + 1
-        })
-    }
-    const prevPageOnClick = async (e) => {
-        e.preventDefault()
-        setPage((page) => {
-            if (page <= 1) {
-                return 1;
-            }
-            return page - 1
-        })
-    }
 
     useEffect(() => {
         PostService.getAllPosts(page, buildQuerySearch()).then(r => {
@@ -74,57 +55,105 @@ const IndexPost = () => {
 
 
     if (load) {
-        return <Loader />
+        return <Loader/>
     } else {
         return (
             <>
                 {auth.isAuthenticated ?
                     <NavLink to={'/posts/create'}>
-                        <Button className={'mt-2 btn-success'}>Создать статью<AddIcon />
+                        <Button className={'mt-2 btn-success'}>Создать статью<AddIcon/>
                         </Button>
                     </NavLink> :
-                    <UnauthorizedAlert />
+                    <UnauthorizedAlert/>
                 }
                 <h1>Последние:</h1>
-                <PostList posts={posts} />
-
+                <PostList posts={posts}/>
+                {/*PAGINATOR*/}
                 <div className={'container mt-5'}>
 
                     <nav aria-label="Page navigation example">
                         <ul className="pagination">
                             <li className="page-item">
                                 <Button className="page-link" aria-label="Previous"
-                                    onClick={firstPageOnClick}>
+                                        onClick={() => getPostsByPage(1)}>
                                     <span aria-hidden="true">&laquo;</span>
                                 </Button>
                             </li>
-                            {page > 2 ?
-                                <li className="page-item">
-                                    <Button className="page-link"
-                                        onClick={prevPageOnClick}>
-                                        <span aria-hidden="true">{page - 1}</span>
-                                    </Button>
-                                </li> : null
+                            {page === 1 ?
+                                <>
+                                    <li className="page-item">
+                                        <Button className="page-link bg-primary text-white"
+                                                onClick={() => getPostsByPage(page - 1)}>
+                                            <span aria-hidden="true">{page}</span>
+                                        </Button>
+                                    </li>
+
+                                    <li className="page-item">
+                                        <Button className="page-link"
+                                                onClick={() => getPostsByPage(page + 1)}>
+                                            <span aria-hidden="true">{page + 1}</span>
+                                        </Button>
+                                    </li>
+
+                                    <li className="page-item">
+                                        <Button className="page-link"
+                                                onClick={() => getPostsByPage(page + 2)}>
+                                            <span aria-hidden="true">{page + 2}</span>
+                                        </Button>
+                                    </li>
+                                </> :
+                                page === paginator.last_page ?
+                                    <>
+                                        <li className="page-item">
+                                            <Button className="page-link"
+                                                    onClick={() => getPostsByPage(page - 2)}>
+                                                <span aria-hidden="true">{page - 2}</span>
+                                            </Button>
+                                        </li>
+
+                                        <li className="page-item">
+                                            <Button className="page-link"
+                                                    onClick={() => getPostsByPage(page - 1)}>
+                                                <span aria-hidden="true">{page - 1}</span>
+                                            </Button>
+                                        </li>
+
+                                        <li className="page-item">
+                                            <Button className="page-link bg-primary text-white">
+                                                <span aria-hidden="true">{page}</span>
+                                            </Button>
+                                        </li>
+                                    </> :
+                                    <>
+                                        <li className="page-item">
+                                            <Button className="page-link"
+                                                    onClick={() => getPostsByPage(page - 1)}>
+                                                <span aria-hidden="true">{page - 1}</span>
+                                            </Button>
+                                        </li>
+
+                                        <li className="page-item">
+                                            <Button className="page-link bg-primary text-white">
+                                                <span aria-hidden="true">{page}</span>
+                                            </Button>
+                                        </li>
+
+                                        <li className="page-item">
+                                            <Button className="page-link"
+                                                    onClick={() => getPostsByPage(page + 1)}>
+                                                <span aria-hidden="true">{page + 1}</span>
+                                            </Button>
+                                        </li>
+                                    </>
                             }
                             <li className="page-item">
-                                <Button className="page-link bg-primary text-white">
-                                    <span aria-hidden="true">{page}</span>
-                                </Button>
-                            </li>
-                            {page < paginator.last_page ?
-                                <li className="page-item">
-                                    <Button className="page-link"
-                                        onClick={nextPageOnClick}>
-                                        <span aria-hidden="true">{page + 1}</span>
-                                    </Button>
-                                </li> : null
-                            }
-                            <li className="page-item">
-                                <Button className="page-link" aria-label="Next"
-                                    onClick={lastPageOnClick}>
+                                <Button className="page-link" aria-label="Previous"
+                                        onClick={() => getPostsByPage(paginator.last_page)}>
                                     <span aria-hidden="true">&raquo;</span>
                                 </Button>
                             </li>
+
+
                         </ul>
                     </nav>
                 </div>

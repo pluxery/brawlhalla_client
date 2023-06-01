@@ -11,7 +11,7 @@ import {set} from "mobx";
 const Register = () => {
     const auth = useContext(AuthContext)
     const navigate = useNavigate()
-    const {request} = useHttp()
+    const {request, error} = useHttp()
     const [form, setForm] = useState({
         name: '', email: '', password: '', confirm_password: ''
     })
@@ -25,21 +25,28 @@ const Register = () => {
         if ((form.name.length < 3 || form.email.length < 6 || form.password.length < 6 || form.confirm_password.length < 6)) {
             return false
         }
-        return form.password === form.confirm_password;
+        else if (form.password !== form.confirm_password){
+            setMessage('Пароли не совпадают')
+            return false
+        }
+        return true;
     }
 
     const registerOnClick = async (e) => {
         e.preventDefault()
         if (validate()) {
             try {
-                const data = request('/auth/register', 'POST', {...form})
-                    .then(r => auth.login(r.access_token, r.user.original))
-                navigate('/posts')
+                const data =  await request('/auth/register', 'POST', {...form})
+                if (!error) {
+                    auth.login(data.access_token, data.user.original)
+                    navigate('/posts')
+                }
             } catch (e) {
-                console.log(e)
+                setMessage("Пользователь с такой почтой уже существует!")
+                console.log(e.message)
             }
         } else {
-            setMessage('Ошибка: некорректные данные. ')
+
         }
     }
     return (

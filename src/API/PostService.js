@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URI } from "../hooks/http.hook";
+import {API_URI} from "../hooks/http.hook";
 
 
 export default class PostService {
@@ -12,15 +12,25 @@ export default class PostService {
         }
     }
 
+
     static async getAllPosts(page = 1, query = '') {
 
         try {
-            const { data } = await axios(`${API_URI}/posts?page=${page}${query}`,);
+            const {data} = await axios(`${API_URI}/posts?page=${page}${query}`,);
             return data
         } catch (e) {
             console.log(e.message)
         }
     };
+
+    static async getPostsByUserId(userId) {
+        try {
+            const {data} = await axios(`${API_URI}/posts?author=${userId}`);
+            return data
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
 
     static async getPostById(id) {
         try {
@@ -34,7 +44,7 @@ export default class PostService {
     static async editPostById(post, body, token) {
         try {
 
-            await axios.patch(`${API_URI}/posts/${post.id}`, { ...body }, this._setTokenToHeader(token)
+            await axios.patch(`${API_URI}/posts/${post.id}`, {...body}, this._setTokenToHeader(token)
             )
         } catch (e) {
             console.log(e.message)
@@ -61,7 +71,7 @@ export default class PostService {
 
     static async addComment(id, body, token) {
         try {
-            await axios.post(`${API_URI}/posts/${id}/comment`, { ...body }, this._setTokenToHeader(token))
+            await axios.post(`${API_URI}/posts/${id}/comment`, {...body}, this._setTokenToHeader(token))
         } catch (e) {
             console.log(e.message)
         }

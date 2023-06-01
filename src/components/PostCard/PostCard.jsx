@@ -17,7 +17,8 @@ const PostCard = ({post}) => {
         await PostService.toggleLikePost(post.id, auth.token)
         setIsLiked(!isLiked)
     }
-    return (<div className="card">
+    return (
+        <div className="card">
             <div className={'flex-column '}>
                 <NavLink to={`/posts/search/author/${post.author.id}`} className={'text-primary'}>
                     <span>{post.author.name}</span>
@@ -36,8 +37,12 @@ const PostCard = ({post}) => {
                     </NavLink>
                 </> : null}
                 <div>
-                    {post.tags?.map((tag, index) => (index < 5 ? <NavLink to={`/posts/search/tag/${tag.id}`}
-                                                                          className={'text-primary'}>#{tag.name} </NavLink> : null))}
+                    {post.tags?.map((tag, index) =>
+                        (
+                            <NavLink to={`/posts/search/tag/${tag.id}`}
+                                     className={'text-primary'}>#{tag.name + " "}
+                            </NavLink>
+                        ))}
                 </div>
 
                 <div>

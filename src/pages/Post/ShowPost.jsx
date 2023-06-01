@@ -50,16 +50,17 @@ const ShowPost = () => {
     }, [setIsLiked, id, setPost, auth.user.id]);
 
     const deletePostOnclick = async (e) => {
-        PostService.deletePostById(post.id, auth.token)
+        await PostService.deletePostById(post.id, auth.token)
         navigate(`/profile/${auth.user.id}`)
     }
 
     const addCommentOnClick = async (e) => {
-        PostService.addComment(post.id, form, auth.token)
+        await PostService.addComment(post.id, form, auth.token)
+        window.location.reload();
     }
 
     const toggleLikeOnClick = async (e) => {
-        PostService.toggleLikePost(post.id, auth.token)
+        await PostService.toggleLikePost(post.id, auth.token)
         setIsLiked(!isLiked)
     }
 

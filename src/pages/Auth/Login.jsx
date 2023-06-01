@@ -7,11 +7,12 @@ import {AuthContext} from "../../context/AuthContext";
 import {useNavigate} from "react-router-dom";
 import UserService from "../../API/UserService";
 import {useHttp} from "../../hooks/http.hook";
+import {set} from "mobx";
 
 const Login = () => {
     const auth = useContext(AuthContext)
     const navigate = useNavigate()
-    const {request} = useHttp()
+    const {request, error} = useHttp()
     const [form, setForm] = useState({
         email: '', password: ''
     })
@@ -24,10 +25,14 @@ const Login = () => {
         e.preventDefault()
         if (form.email && form.password) {
             try {
-                request('/auth/login', 'POST', {...form}).then(r => auth.login(r.access_token, r.user.original))
-                navigate('/posts')
+                const data = await request('/auth/login', 'POST', {...form})
+                if (!error) {
+                    auth.login(data.access_token, data.user.original)
+                    navigate('/posts')
+                }
             } catch (e) {
-                console.log(e)
+                setMessage(error)
+                console.log(e.message)
             }
         } else {
             setMessage('Заполните все поля')
