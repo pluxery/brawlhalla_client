@@ -8,7 +8,6 @@ export default class PostService {
         return {
             headers: {
                 Authorization: `Bearer ${token}`,
-                "Content-type": "multipart/form-data",
             }
         }
     }
@@ -54,7 +53,7 @@ export default class PostService {
 
     static async createPost(body, token) {
         try {
-            await axios.post(`${API_URI}/posts/`, {...body}, this._setTokenToHeader(token))
+            await axios.post(`${API_URI}/posts/`, body, this._setTokenToHeader(token))
         } catch (e) {
             console.log(e.message)
         }

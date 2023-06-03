@@ -7,23 +7,30 @@ import PostService from '../../API/PostService';
 
 const EditPost = () => {
     const auth = useContext(AuthContext)
-    const [post, setPost] = useState()
+    const [post, setPost] = useState({})
     const {id} = useParams()
     const navigate = useNavigate()
 
-    const [form, setForm] = useState({
-            title: '',
-            content: '',
-            category: '',
-            tags: '',
-        }
-    )
+    const [formInput, setFormInput] = useState({
+        title: '', content: '', category: '', tags: '', image: ''
+    })
     const changeInputHandler = event => {
-        setForm({...form, [event.target.name]: event.target.value})
+        setFormInput({...formInput, [event.target.name]: event.target.value})
+        if (event.target.files) {
+            setFormInput({...formInput, image: event.target.files[0]})
+        }
     }
 
-    function filterObject(obj) {
-        return Object.fromEntries(Object.entries(obj).filter(([key, val]) => val !== ''));
+    function objectFilter(obj, predicate) {
+        return Object.fromEntries(Object.entries(obj).filter(predicate));
+    }
+
+    function objectToFormData(obj) {
+        const formData = new FormData()
+        for (var key in obj) {
+            formData.append(key, obj[key]);
+        }
+        return formData
     }
 
     function tagsToArray(str) {
@@ -31,27 +38,39 @@ const EditPost = () => {
     }
 
     useEffect(() => {
-            PostService.getPostById(id).then(r => setPost(r.data))
-        },
-        [id, setPost])
+        PostService.getPostById(id).then(r => setPost(r.data))
+    }, [id, setPost])
 
 
     const editPostOnClick = async (e) => {
         e.preventDefault()
-        if (form.tags) {
-            form.tags = tagsToArray(form.tags)
+        if (formInput.tags) {
+            formInput.tags = tagsToArray(formInput.tags)
         }
-        const filterForm = filterObject(form)
-        PostService.editPostById(post, filterForm, auth.token)
-        navigate(`/profile/${post?.author.id}`)
+        const body = objectToFormData(objectFilter(formInput, function ([key, val]) {
+            return val !== ''
+        }))
+        console.log("BODY", ...body)
+        return
+        await PostService.editPostById(post, body, auth.token)
+        navigate(`/posts/${post.id}`)
 
     }
 
     return (
         <div className={'container-sm'}>
+
+            <div className="card">
+                <h5>{post.created_at}</h5>
+                <div className="fakeimg">
+                    <img
+                        src={post.image}
+                        className="card-img-top rounded mx-auto d-block" alt="..."
+                        style={{height: 420, width: 680}}/>
+                </div>
+            </div>
             <div className="mb-3">
-                <label htmlFor="formFileMultiple" className="form-label">Preview image</label>
-                <input className="form-control" type="file" id="formFileMultiple" multiple/>
+                <input className="form-control" type="file" id="image" name="image"/>
             </div>
 
             <div className="mb-3">
@@ -61,7 +80,7 @@ const EditPost = () => {
                        placeholder="title"
                        id={'title'}
                        name={'title'}
-                       value={form.title ? form.title : post?.title}
+                       value={formInput.title ? formInput.title : post?.title}
                        onChange={changeInputHandler}/>
             </div>
 
@@ -72,7 +91,7 @@ const EditPost = () => {
                        placeholder="Введите категорию"
                        id={'category'}
                        name={'category'}
-                       value={form.category ? form.category : post?.category?.name}
+                       value={formInput.category ? formInput.category : post?.category?.name}
                        onChange={changeInputHandler}/>
             </div>
 
@@ -81,12 +100,9 @@ const EditPost = () => {
 
                 <input type="text" className="form-control" id="tags" name={'tags'}
                        onChange={changeInputHandler}
-                       value={
-                           form.tags ? form.tags :
-                               post?.tags.map(tag => {
-                                   return '#' + tag.name + ' '
-                               })
-                       }
+                       value={formInput.tags ? formInput.tags : post.tags?.map(tag => {
+                           return '#' + tag.name + ' '
+                       })}
                        placeholder="#tag1 #tag2 #tag3"
                 />
             </div>
@@ -97,7 +113,7 @@ const EditPost = () => {
                 <textarea className="form-control"
                           id="content"
                           name={'content'}
-                          value={form.content ? form.content : post?.content}
+                          value={formInput.content ? formInput.content : post?.content}
                           onChange={changeInputHandler}
                           rows="3">
 

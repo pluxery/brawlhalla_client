@@ -11,7 +11,7 @@ const CreatePost = () => {
     const {request} = useHttp()
     const auth = useContext(AuthContext)
     const navigate = useNavigate()
-    const [form, setForm] = useState({
+    const [formInput, setFormInput] = useState({
         image: '',
         title: '',
         content: '',
@@ -20,11 +20,22 @@ const CreatePost = () => {
     })
     const [error, setError] = useState()
     const changeInputHandler = event => {
-        setForm({...form, [event.target.name]: event.target.value})
+        setFormInput({...formInput, [event.target.name]: event.target.value})
+        if (event.target.files) {
+            setFormInput({...formInput, image: event.target.files[0]})
+        }
     }
 
-    function filterObject(obj) {
-        return Object.fromEntries(Object.entries(obj).filter(([key, val]) => val !== ''));
+    function objectFilter(obj, predicate) {
+        return Object.fromEntries(Object.entries(obj).filter(predicate));
+    }
+
+    function objectToFormData(obj) {
+        const formData = new FormData()
+        for (var key in obj) {
+            formData.append(key, obj[key]);
+        }
+        return formData
     }
 
     function tagsToArray(str) {
@@ -34,17 +45,13 @@ const CreatePost = () => {
     const createPostOnClick = async (e) => {
         e.preventDefault()
         try {
-            if (form.tags) {
-                form.tags = tagsToArray(form.tags)
+            if (formInput.tags) {
+                formInput.tags = tagsToArray(formInput.tags)
             }
-            //TODO load image on server
-            const filterForm = filterObject(form)
-            // const formData = new FormData();
-            // formData.append('title', form.title)
-            // formData.append('content', form.content)
-            //formData.append('title', form.title)
-            console.log(filterForm)
-            await PostService.createPost(filterForm, auth.token)
+            const body = objectToFormData(objectFilter(formInput, function ([key, val]) {
+                return val !== ''
+            }))
+            await PostService.createPost(body, auth.token)
             navigate('/posts')
         } catch (e) {
             setError('Данные заполнены некорректно')
@@ -62,7 +69,6 @@ const CreatePost = () => {
                 <input type="file" className="form-control"
                        id="image"
                        name="image"
-                       value={form.image}
                        onChange={changeInputHandler}/>
                 <label className="input-group-text" htmlFor="image">Upload</label>
             </div>
@@ -74,7 +80,7 @@ const CreatePost = () => {
                        placeholder="title"
                        id={'title'}
                        name={'title'}
-                       value={form.title}
+                       value={formInput.title}
                        onChange={changeInputHandler}/>
             </div>
 
@@ -85,7 +91,7 @@ const CreatePost = () => {
                        placeholder="Введите категорию"
                        id={'category'}
                        name={'category'}
-                       value={form.category}
+                       value={formInput.category}
                        onChange={changeInputHandler}/>
             </div>
 
@@ -94,7 +100,7 @@ const CreatePost = () => {
                 <input type="text" className="form-control"
                        id="tags" name={'tags'}
                        onChange={changeInputHandler}
-                       value={form.tags}
+                       value={formInput.tags}
                        placeholder="#tag1 #tag2 #tag3"/>
             </div>
 
@@ -104,7 +110,7 @@ const CreatePost = () => {
                 <textarea className="form-control"
                           id="content"
                           name={'content'}
-                          value={form.content}
+                          value={formInput.content}
                           onChange={changeInputHandler}
                           rows="3">
 
