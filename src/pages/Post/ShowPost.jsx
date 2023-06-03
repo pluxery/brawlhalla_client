@@ -2,10 +2,8 @@ import React, {useContext, useEffect, useState} from 'react';
 import {NavLink, useNavigate, useParams} from "react-router-dom";
 import {Button} from 'react-bootstrap';
 import '../../styles/PostShow.css'
-import {API_URI, useHttp} from "../../hooks/http.hook";
 import Loader from "../../components/Loader/Loader";
 import {AuthContext} from "../../context/AuthContext";
-import axios from "axios";
 import CommentCard from "../../components/CommentCard/CommentCard";
 import UnauthorizedAlert from "../../components/Alerts/UnauthorizedAlert";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -13,6 +11,10 @@ import ModeCommentIcon from "@mui/icons-material/ModeComment";
 import {pink} from "@mui/material/colors";
 import ProfileCard from "../../components/AuthorSidebar/ProfileCard";
 import PostService from '../../API/PostService';
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const ShowPost = () => {
     const auth = useContext(AuthContext)
@@ -51,7 +53,7 @@ const ShowPost = () => {
 
     const deletePostOnclick = async (e) => {
         await PostService.deletePostById(post.id, auth.token)
-        navigate(`/profile/${auth.user.id}`)
+        navigate(`/profile/posts`)
     }
 
     const addCommentOnClick = async (e) => {
@@ -80,7 +82,7 @@ const ShowPost = () => {
                             <h5>{post.created_at}</h5>
                             <div className="fakeimg">
                                 <img
-                                    src="https://cdn2.unrealengine.com/atla-productart-1920x1080-1920x1080-477cda5a5a30.jpg"
+                                    src={post.image}
                                     className="card-img-top rounded mx-auto d-block" alt="..."
                                     style={{height: 420, width: 680}}/>
                             </div>
@@ -90,21 +92,18 @@ const ShowPost = () => {
                         <div>
                             {
                                 auth.isAuthenticated ? <>
-                                    <div className="container text-start">
+                                    <div className="container text-end">
                                         <span onClick={toggleLikeOnClick}>
+                                            <i>{post.likes.length}</i>
                                             {isLiked ?
-                                                <>
-                                                    {post.likes.length}
+                                                <Fab disabled aria-label="like" className={"m-2"}>
                                                     <FavoriteIcon sx={{color: pink[500]}}/>
-                                                </> :
-                                                <>
-                                                    {post.likes.length}
+                                                </Fab>
+                                                :
+                                                <Fab disabled aria-label="like" className={"m-2"}>
                                                     <FavoriteIcon/>
-                                                </>
+                                                </Fab>
                                             }
-                                        </span>
-                                        <span>
-                                            {post.comments.length}<ModeCommentIcon/>
                                         </span>
                                     </div>
                                     <div className="card">
@@ -141,13 +140,14 @@ const ShowPost = () => {
                         {post.author.id === auth.user.id ?
 
                             <div className="card">
-                                <NavLink to={`/posts/${post.id}/edit`} className={'btn btn-success mb-3'}>
-                                    Редактировать запись
+                                <Fab color="error" aria-label="add" onClick={deletePostOnclick}>
+                                    <DeleteIcon/>
+                                </Fab>
+                                <NavLink to={`/posts/${post.id}/edit`}>
+                                    <Fab color="success" aria-label="edit">
+                                        <EditIcon/>
+                                    </Fab>
                                 </NavLink>
-
-                                <Button onClick={deletePostOnclick} className='btn-danger'>
-                                    Удалить запись
-                                </Button>
                             </div> : null}
 
                         <div className="card">

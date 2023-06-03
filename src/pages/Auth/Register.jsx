@@ -38,7 +38,7 @@ const Register = () => {
             try {
                 const data =  await request('/auth/register', 'POST', {...form})
                 if (!error) {
-                    auth.login(data.access_token, data.user.original)
+                    auth.login(data.access_token, data.user)
                     navigate('/posts')
                 }
             } catch (e) {

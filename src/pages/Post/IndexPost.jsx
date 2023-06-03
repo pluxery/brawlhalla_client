@@ -1,18 +1,19 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import PostCard from "../../components/PostCard/PostCard";
 import '../../styles/Posts.css'
 
-
-import {NavLink, useParams} from "react-router-dom";
-import {Button} from "react-bootstrap";
+import Fab from '@mui/material/Fab';
+import { NavLink, useParams } from "react-router-dom";
+import { Button } from "react-bootstrap";
 import AddIcon from '@mui/icons-material/Add';
-import {AuthContext} from "../../context/AuthContext";
-import {useHttp} from "../../hooks/http.hook";
+import { AuthContext } from "../../context/AuthContext";
+import { useHttp } from "../../hooks/http.hook";
 import Loader from "../../components/Loader/Loader";
 import PostList from "../../components/PostList/PostList";
-import {STORAGE} from "../../hooks/auth.hook";
+import { STORAGE } from "../../hooks/auth.hook";
 import UnauthorizedAlert from "../../components/Alerts/UnauthorizedAlert";
 import PostService from '../../API/PostService';
+import EditIcon from '@mui/icons-material/Edit';
 
 const IndexPost = () => {
     const [posts, setPosts] = useState([]);
@@ -55,19 +56,19 @@ const IndexPost = () => {
 
 
     if (load) {
-        return <Loader/>
+        return <Loader />
     } else {
         return (
             <>
                 {auth.isAuthenticated ?
                     <NavLink to={'/posts/create'}>
-                        <Button className={'mt-2 btn-success'}>Создать статью<AddIcon/>
+                        <Button className={'mt-2 btn-success'}>Создать статью<AddIcon />
                         </Button>
                     </NavLink> :
-                    <UnauthorizedAlert/>
+                    <UnauthorizedAlert />
                 }
                 <h1>Последние:</h1>
-                <PostList posts={posts}/>
+                <PostList posts={posts} />
                 {/*PAGINATOR*/}
                 <div className={'container mt-5'}>
 
@@ -75,7 +76,7 @@ const IndexPost = () => {
                         <ul className="pagination">
                             <li className="page-item">
                                 <Button className="page-link" aria-label="Previous"
-                                        onClick={() => getPostsByPage(1)}>
+                                    onClick={() => getPostsByPage(1)}>
                                     <span aria-hidden="true">&laquo;</span>
                                 </Button>
                             </li>
@@ -83,21 +84,21 @@ const IndexPost = () => {
                                 <>
                                     <li className="page-item">
                                         <Button className="page-link bg-primary text-white"
-                                                onClick={() => getPostsByPage(page - 1)}>
+                                            onClick={() => getPostsByPage(page - 1)}>
                                             <span aria-hidden="true">{page}</span>
                                         </Button>
                                     </li>
 
                                     <li className="page-item">
                                         <Button className="page-link"
-                                                onClick={() => getPostsByPage(page + 1)}>
+                                            onClick={() => getPostsByPage(page + 1)}>
                                             <span aria-hidden="true">{page + 1}</span>
                                         </Button>
                                     </li>
 
                                     <li className="page-item">
                                         <Button className="page-link"
-                                                onClick={() => getPostsByPage(page + 2)}>
+                                            onClick={() => getPostsByPage(page + 2)}>
                                             <span aria-hidden="true">{page + 2}</span>
                                         </Button>
                                     </li>
@@ -106,14 +107,14 @@ const IndexPost = () => {
                                     <>
                                         <li className="page-item">
                                             <Button className="page-link"
-                                                    onClick={() => getPostsByPage(page - 2)}>
+                                                onClick={() => getPostsByPage(page - 2)}>
                                                 <span aria-hidden="true">{page - 2}</span>
                                             </Button>
                                         </li>
 
                                         <li className="page-item">
                                             <Button className="page-link"
-                                                    onClick={() => getPostsByPage(page - 1)}>
+                                                onClick={() => getPostsByPage(page - 1)}>
                                                 <span aria-hidden="true">{page - 1}</span>
                                             </Button>
                                         </li>
@@ -127,7 +128,7 @@ const IndexPost = () => {
                                     <>
                                         <li className="page-item">
                                             <Button className="page-link"
-                                                    onClick={() => getPostsByPage(page - 1)}>
+                                                onClick={() => getPostsByPage(page - 1)}>
                                                 <span aria-hidden="true">{page - 1}</span>
                                             </Button>
                                         </li>
@@ -140,7 +141,7 @@ const IndexPost = () => {
 
                                         <li className="page-item">
                                             <Button className="page-link"
-                                                    onClick={() => getPostsByPage(page + 1)}>
+                                                onClick={() => getPostsByPage(page + 1)}>
                                                 <span aria-hidden="true">{page + 1}</span>
                                             </Button>
                                         </li>
@@ -148,7 +149,7 @@ const IndexPost = () => {
                             }
                             <li className="page-item">
                                 <Button className="page-link" aria-label="Previous"
-                                        onClick={() => getPostsByPage(paginator.last_page)}>
+                                    onClick={() => getPostsByPage(paginator.last_page)}>
                                     <span aria-hidden="true">&raquo;</span>
                                 </Button>
                             </li>

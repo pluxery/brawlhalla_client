@@ -14,7 +14,7 @@ const ProfileAbout = () => {
     useEffect(() => {
         UserService.getUserById(id, auth.token)
             .then(r => {
-                setUser(r.data)
+                setUser(r.data.data)
                 setIsLoading(false)
             });
     }, [id, setUser, setIsLoading, auth.token]);
@@ -30,7 +30,7 @@ const ProfileAbout = () => {
                 </div>
                 :
                 <div>
-                    {user.name}
+                    {!user.about ? "информация отсутсвует" : user.about}
                 </div>}
         </>
     );

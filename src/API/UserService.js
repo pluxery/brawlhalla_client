@@ -7,7 +7,7 @@ export default class UserService {
     static _setTokenToHeader = (token) => {
         return {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
             }
         }
     }
@@ -22,8 +22,7 @@ export default class UserService {
 
     static async getMe(token) {
         try {
-            const {data} = await axios.get(`${API_URI}/auth/me`, this._setTokenToHeader(token))
-            return data
+            return await axios.get(`${API_URI}/auth/me`, this._setTokenToHeader(token))
         } catch (e) {
             console.log(e.message)
         }
@@ -32,8 +31,7 @@ export default class UserService {
 
     static async getUserById(id, token) {
         try {
-            const {data} = await axios.get(`${API_URI}/users/${id}`, this._setTokenToHeader(token))
-            return data
+            return await axios.get(`${API_URI}/users/${id}`, this._setTokenToHeader(token))
         } catch (e) {
             console.log(e.message)
         }
@@ -58,8 +56,7 @@ export default class UserService {
 
     static async getSubscriptions(id) {
         try {
-            const {data} = await axios.get(`${API_URI}/users/${id}/subscriptions`)
-            return data
+            return await axios.get(`${API_URI}/users/${id}/subscriptions`)
         } catch (e) {
             console.log(e.message)
         }
@@ -67,8 +64,7 @@ export default class UserService {
 
     static async getLikedPosts(userId, token) {
         try {
-            const {data} = await axios.get(`${API_URI}/users/${userId}/liked_posts`, this._setTokenToHeader(token))
-            return data
+            return await axios.get(`${API_URI}/users/${userId}/liked_posts`,this._setTokenToHeader(token))
         } catch (e) {
             console.log(e.message)
         }
@@ -77,12 +73,10 @@ export default class UserService {
 
     static async updateProfile(id, token, body) {
         try {
-            const {data} = await axios.patch(`${API_URI}/users/${id}`, {...body}, this._setTokenToHeader(token))
-            return data
+            return await axios.post(`${API_URI}/users/${id}`, body,this._setTokenToHeader(token))
         } catch (e) {
             console.log(e.message)
         }
     }
-
 
 }

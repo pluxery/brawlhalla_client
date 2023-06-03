@@ -1,13 +1,13 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {NavLink} from "react-router-dom";
+import React, { useContext, useEffect, useState } from 'react';
+import { NavLink } from "react-router-dom";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import PostService from "../../API/PostService";
-import {AuthContext} from "../../context/AuthContext";
-import {pink} from "@mui/material/colors";
+import { AuthContext } from "../../context/AuthContext";
+import { pink } from "@mui/material/colors";
 
 
-const PostCard = ({post}) => {
+const PostCard = ({ post }) => {
 
     const auth = useContext(AuthContext)
 
@@ -25,24 +25,24 @@ const PostCard = ({post}) => {
                 </NavLink>
                 <span> | {post.created_at}</span>
             </div>
-            <img src="https://cdn2.unrealengine.com/atla-productart-1920x1080-1920x1080-477cda5a5a30.jpg"
-                 className="card-img-top rounded mx-auto d-block" alt="..."
-                 style={{height: "12rem"}}/>
+            <img src={post.image}
+                className="card-img-top rounded mx-auto d-block" alt="..."
+                style={{ height: "12rem" }} />
             <div className="card-body">
                 <h5 className="card-title">{post.title}</h5>
                 {post.category ? <>
-                    <span>Категория:</span> <br/>
+                    <span>Категория:</span> <br />
                     <NavLink to={`/posts/search/category/${post.category.id}`}>
                         <span>{post.category?.name}</span>
                     </NavLink>
                 </> : null}
                 <div>
                     {post.tags?.map((tag, index) =>
-                        (
-                            <NavLink to={`/posts/search/tag/${tag.id}`}
-                                     className={'text-primary'}>#{tag.name + " "}
-                            </NavLink>
-                        ))}
+                    (
+                        <NavLink to={`/posts/search/tag/${tag.id}`}
+                            className={'text-primary'}>#{tag.name + " "}
+                        </NavLink>
+                    ))}
                 </div>
 
                 <div>
@@ -50,26 +50,26 @@ const PostCard = ({post}) => {
                 </div>
             </div>
             <NavLink to={`/posts/${post.id}`}
-                     className="btn btn-success
+                className="btn btn-success
                       btn-sm btn-block">
                 Посмотреть
             </NavLink>
             <div className="container text-start">
-                    <span onClick={toggleLikeOnClick}>
-                         {isLiked ?
-                             <>
-                                 {post.likes}
-                                 <FavoriteIcon sx={{color: pink[500]}}/>
-                             </> :
-                             <>
-                                 {post.likes}
-                                 <FavoriteIcon/>
-                             </>
-                         }
-                    </span>
+                <span onClick={toggleLikeOnClick}>
+                    {isLiked ?
+                        <>
+                            {post.likes}
+                            <FavoriteIcon sx={{ color: pink[500] }} />
+                        </> :
+                        <>
+                            {post.likes}
+                            <FavoriteIcon />
+                        </>
+                    }
+                </span>
                 <span>
-                        {post.comments}<ModeCommentIcon/>
-                    </span>
+                    {post.comments}<ModeCommentIcon />
+                </span>
             </div>
 
         </div>);

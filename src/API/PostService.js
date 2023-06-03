@@ -4,10 +4,10 @@ import {API_URI} from "../hooks/http.hook";
 
 export default class PostService {
 
-    static _setTokenToHeader = (token) => {
+    static _setTokenToHeader = (token, ) => {
         return {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
             }
         }
     }
@@ -46,6 +46,14 @@ export default class PostService {
 
             await axios.patch(`${API_URI}/posts/${post.id}`, {...body}, this._setTokenToHeader(token)
             )
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
+
+    static async createPost(body, token) {
+        try {
+            await axios.post(`${API_URI}/posts/`, body, this._setTokenToHeader(token))
         } catch (e) {
             console.log(e.message)
         }

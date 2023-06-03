@@ -11,7 +11,7 @@ const Subscriptions = () => {
     useEffect(() => {
         UserService.getSubscriptions(id)
             .then(r => {
-                setSubscriptions(r)
+                setSubscriptions(r.data)
                 setIsLoading(false)
             })
     }, [id, setSubscriptions])

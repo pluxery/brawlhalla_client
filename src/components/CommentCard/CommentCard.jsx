@@ -6,7 +6,8 @@ import axios from "axios";
 import {API_URI} from "../../hooks/http.hook";
 import {Button} from "react-bootstrap";
 import {Avatar} from "@mui/material";
-
+import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 const CommentCard = ({comment}) => {
 
     const auth = useContext(AuthContext)
@@ -41,17 +42,18 @@ const CommentCard = ({comment}) => {
                         </NavLink>
                     </div>
 
-                    <div className="col-auto">
-                        <div className="col-auto me-auto">{comment.created_at}</div>
-                        <div className="col-auto">{
-                            auth.user.id === comment.author.id ?
-                                <span className={'text-danger'} onClick={deleteCommentOnClick}>
-                            {!isDeleted ? "Удалить" : "Удалено"}
+                        <div className="col-auto">
+                            <div className="col-auto me-auto">{comment.created_at}</div>
+                            <div className="col-auto">{
+                                auth.user.id === comment.author.id ?
+                                    <span className={'text-danger'} onClick={deleteCommentOnClick}>
+                            {!isDeleted ?  <DeleteIcon/> : <DeleteForeverIcon/>}
                         </span> : null}
+                            </div>
                         </div>
                     </div>
 
-                </div>
+
 
 
             </div>

@@ -21,7 +21,7 @@ const LikedPosts = () => {
     useEffect(() => {
         UserService.getLikedPosts(id, auth.token)
             .then(r => {
-                setPosts(r.data)
+                setPosts(r.data.data)
                 setIsLoading(false)
             })
 

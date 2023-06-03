@@ -3,38 +3,58 @@ import {Button} from 'react-bootstrap'
 import {useHttp} from "../../hooks/http.hook";
 import {useNavigate} from "react-router-dom";
 import DangerAlert from "../../components/Alerts/DangerAlert";
+import axios from "axios";
+import PostService from "../../API/PostService";
+import {AuthContext} from "../../context/AuthContext";
 
 const CreatePost = () => {
     const {request} = useHttp()
+    const auth = useContext(AuthContext)
     const navigate = useNavigate()
-    const [form, setForm] = useState({
+    const [formInput, setFormInput] = useState({
+        image: '',
         title: '',
         content: '',
         category: '',
         tags: ''
     })
-    const [error, setError]  =useState()
+    const [error, setError] = useState()
     const changeInputHandler = event => {
-        setForm({...form, [event.target.name]: event.target.value})
+        setFormInput({...formInput, [event.target.name]: event.target.value})
+        if (event.target.files) {
+            setFormInput({...formInput, image: event.target.files[0]})
+        }
     }
-    function filterObject(obj) {
-        return Object.fromEntries(Object.entries(obj).filter(([key, val]) => val !== ''));
+
+    function objectFilter(obj, predicate) {
+        return Object.fromEntries(Object.entries(obj).filter(predicate));
+    }
+
+    function objectToFormData(obj) {
+        const formData = new FormData()
+        for (var key in obj) {
+            formData.append(key, obj[key]);
+        }
+        return formData
     }
 
     function tagsToArray(str) {
         return str.split('#').filter(item => item !== '')
     }
+
     const createPostOnClick = async (e) => {
         e.preventDefault()
         try {
-            if (form.tags) {
-                form.tags = tagsToArray(form.tags)
+            if (formInput.tags) {
+                formInput.tags = tagsToArray(formInput.tags)
             }
-            const filterForm = filterObject(form)
-            await request('/posts', 'POST', {...filterForm})
+            const body = objectToFormData(objectFilter(formInput, function ([key, val]) {
+                return val !== ''
+            }))
+            await PostService.createPost(body, auth.token)
             navigate('/posts')
         } catch (e) {
-            setError('Данные заполнены не корректно')
+            setError('Данные заполнены некорректно')
             console.log(e.message)
         }
 
@@ -43,10 +63,14 @@ const CreatePost = () => {
 
     return (
         <div className={'container-sm'}>
-            {error? <DangerAlert message={error}/>:null }
-            <div className="mb-3">
-                <label htmlFor="formFileMultiple" className="form-label">Preview image</label>
-                <input className="form-control" type="file" id="formFileMultiple" multiple/>
+            {error ? <DangerAlert message={error}/> : null}
+            <div className="input-group mb-3">
+
+                <input type="file" className="form-control"
+                       id="image"
+                       name="image"
+                       onChange={changeInputHandler}/>
+                <label className="input-group-text" htmlFor="image">Upload</label>
             </div>
 
             <div className="mb-3">
@@ -56,7 +80,7 @@ const CreatePost = () => {
                        placeholder="title"
                        id={'title'}
                        name={'title'}
-                       value={form.title}
+                       value={formInput.title}
                        onChange={changeInputHandler}/>
             </div>
 
@@ -67,7 +91,7 @@ const CreatePost = () => {
                        placeholder="Введите категорию"
                        id={'category'}
                        name={'category'}
-                       value={form.category}
+                       value={formInput.category}
                        onChange={changeInputHandler}/>
             </div>
 
@@ -76,7 +100,7 @@ const CreatePost = () => {
                 <input type="text" className="form-control"
                        id="tags" name={'tags'}
                        onChange={changeInputHandler}
-                       value={form.tags}
+                       value={formInput.tags}
                        placeholder="#tag1 #tag2 #tag3"/>
             </div>
 
@@ -86,7 +110,7 @@ const CreatePost = () => {
                 <textarea className="form-control"
                           id="content"
                           name={'content'}
-                          value={form.content}
+                          value={formInput.content}
                           onChange={changeInputHandler}
                           rows="3">
 

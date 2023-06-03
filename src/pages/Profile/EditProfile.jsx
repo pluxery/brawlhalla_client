@@ -1,32 +1,40 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {ChangeEvent, useContext, useEffect, useState} from 'react';
 import {AuthContext} from "../../context/AuthContext";
 import UserService from "../../API/UserService";
 import {Button} from "react-bootstrap";
 import DangerAlert from "../../components/Alerts/DangerAlert";
 import {useNavigate} from "react-router-dom";
+import {Avatar} from "@mui/material";
 
 const EditProfile = () => {
 
     const auth = useContext(AuthContext)
     const navigate = useNavigate()
-    const [form, setForm]
-        = useState({
+    const [formInput, setFormInput] = useState({
         name: '',
         email: '',
         steam_link: '',
-        // cur_password: '',
-        // new_password: '',
-        // repeat_new_password: '',
         elo: '',
-        avatar: '',
         about: '',
+        avatar: '',
     })
-    const changeInputHandler = event => {
-        setForm({...form, [event.target.name]: event.target.value})
+    const changeInput = event => {
+        setFormInput({...formInput, [event.target.name]: event.target.value})
+        if (event.target.files) {
+            setFormInput({...formInput, avatar: event.target.files[0]})
+        }
     }
 
-    function filteredForm(_form) {
-        return Object.fromEntries(Object.entries(_form).filter(([key, val]) => val !== ''));
+    function objectFilter(obj, predicate) {
+        return Object.fromEntries(Object.entries(obj).filter(predicate));
+    }
+
+    function objectToFormData(data) {
+        const formData = new FormData()
+        for (var key in data) {
+            formData.append(key, data[key]);
+        }
+        return formData
     }
 
     const [user, setUser] = useState({
@@ -35,90 +43,105 @@ const EditProfile = () => {
         steam_link: '',
         elo: '',
         about: '',
+        avatar: '',
     })
-
-    const validateForm = (_form) => {
-
-    }
-    const setRankImage = (elo) => {
-        return 0
-    }
     const [message, setMessage] = useState('')
     const [visibleAlert, setVisibleAlert] = useState(false)
     const updateProfile = async (e) => {
         e.preventDefault()
-        const result = await UserService.updateProfile(auth.user.id, auth.token, filteredForm(form))
-        if (result) {
-            setMessage(result.message)
-            setVisibleAlert(true)
-        } else {
-            console.log("result =", result)
-            //navigate(`/profile/${auth.user.id}`)
-        }
+        const body = objectToFormData(objectFilter(formInput, function ([key, val]) {
+            return val !== ''
+        }))
+        await UserService.updateProfile(auth.user.id, auth.token, body)
+            .then(res => {
+                if (!res) {
+                    setMessage('Некоректные данные!')
+                    setVisibleAlert(true)
+                } else {
+                    navigate(`/profile/${auth.user.id}`)
+                }
+            }).catch(err => console.log(err.message));
     }
 
     useEffect(() => {
-        UserService.getMe(auth.token).then(r => setUser(r))
-    }, [setUser])
+        UserService.getMe(auth.token).then(r => setUser(r.data.data))
+    }, [auth.token, setUser])
+
 
     return (
         <div className={'m-5 container-sm'}>
             {visibleAlert ? <DangerAlert message={message}/> : null}
-            {/*<div className="input-group mb-3">*/}
-            {/*    <input type="file" className="form-control"/>*/}
-            {/*    <label className="input-group-text" htmlFor="inputGroupFile02">Загрузить автарку</label>*/}
-            {/*</div>*/}
+
+            <div className="container text-center">
+                <div className="row justify-content-center">
+                    <Avatar alt="Remy Sharp"
+                            variant="square"
+                    className='m-3 p-2'
+                            src={user.avatar}
+                            sx={{width: 170, height: 170}}/>
+                </div>
+            </div>
+
+            <div className="input-group mb-3">
+                <input type="file"
+                       className="form-control"
+                       id={'avatar'}
+                       name={'avatar'}
+                       onChange={changeInput}
+
+                />
+                <label className="input-group-text" htmlFor="avatar">Загрузить автарку</label>
+            </div>
             <div className="input-group mb-3">
                 <span className="input-group-text">Сменить имя</span>
-                <input type="text" className="form-control" placeholder="username"
+                <input type="text" className="form-control"
+                       placeholder={user.name}
                        name={'name'}
-                       value={form.name ? form.name : user.name}
-                       onChange={changeInputHandler}
+                       value={formInput.name}
+                       onChange={changeInput}
                 />
             </div>
             <div className="input-group mb-3">
                 <span className="input-group-text">Сменить почту</span>
-                <input type="email" className="form-control" placeholder="email@example.com"
+                <input type="email" className="form-control"
+                       placeholder={user.email}
                        name={'email'}
-                       value={form.email ? form.email : user.email}
-                       onChange={changeInputHandler}
+                       value={formInput.email}
+                       onChange={changeInput}
                 />
             </div>
 
-            {/*<div className="input-group mb-3">*/}
-            {/*    <span className="input-group-text">Сменить пароль</span>*/}
-            {/*    <input type="password" className="form-control" placeholder="текущий пароль"/>*/}
-            {/*    <input type="password" className="form-control" placeholder="новый пароль"/>*/}
-            {/*    <input type="password" className="form-control" placeholder="повторите новый пароль"*/}
-            {/*    />*/}
-            {/*</div>*/}
 
             <div className="input-group mb-3">
                 <span className="input-group-text">https://steamcommunity.com/profiles/</span>
-                <input type="text" className="form-control" placeholder="76561198111898341"
+                <input type="text" className="form-control"
+                       placeholder={user.steam_link}
                        name={'steam_link'}
-                       value={form.steam_link ? form.steam_link : user.steam_link}
-                       onChange={changeInputHandler}/>
+                       value={formInput.steam_link}
+                       onChange={changeInput}/>
             </div>
 
             <div className="input-group mb-3">
                 <span className="input-group-text">Твой ранг</span>
-                <input type="text" className="form-control" placeholder="750 - 3000"
+                <input type="text" className="form-control"
+                       placeholder={user.elo ? user.elo : "от 750 до 3000"}
                        name={'elo'}
-                       value={form.elo ? form.elo : user.elo}
-                       onChange={changeInputHandler}/>
-                <span className="input-group-text">{setRankImage(1)}</span>
+                       value={formInput.elo}
+                       onChange={changeInput}/>
+                <span className="input-group-text">elo</span>
             </div>
             <div className="input-group">
                 <span className="input-group-text">О себе</span>
-                <textarea className="form-control" placeholder={'Расскажи о себе и своих предпочтениях...'}
+                <textarea className="form-control"
+                          placeholder={user.about ? user.about : 'Расскажи о себе и своих предпочтениях...'}
                           name={'about'}
-                          onChange={changeInputHandler}
-                          value={form.about ? form.about : user.about}>
+                          onChange={changeInput}
+                          value={formInput.about}>
                 </textarea>
             </div>
 
             <Button className={'btn-success mt-3'} onClick={updateProfile}>Редактировать</Button>
+            
         </div>
     );
 };
