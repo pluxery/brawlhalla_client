@@ -25,7 +25,7 @@ const PostCard = ({post}) => {
                 </NavLink>
                 <span> | {post.created_at}</span>
             </div>
-            <img src="https://cdn2.unrealengine.com/atla-productart-1920x1080-1920x1080-477cda5a5a30.jpg"
+            <img src={post.image}
                  className="card-img-top rounded mx-auto d-block" alt="..."
                  style={{height: "12rem"}}/>
             <div className="card-body">

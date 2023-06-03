@@ -3,20 +3,26 @@ import {Button} from 'react-bootstrap'
 import {useHttp} from "../../hooks/http.hook";
 import {useNavigate} from "react-router-dom";
 import DangerAlert from "../../components/Alerts/DangerAlert";
+import axios from "axios";
+import PostService from "../../API/PostService";
+import {AuthContext} from "../../context/AuthContext";
 
 const CreatePost = () => {
     const {request} = useHttp()
+    const auth = useContext(AuthContext)
     const navigate = useNavigate()
     const [form, setForm] = useState({
+        image: '',
         title: '',
         content: '',
         category: '',
         tags: ''
     })
-    const [error, setError]  =useState()
+    const [error, setError] = useState()
     const changeInputHandler = event => {
         setForm({...form, [event.target.name]: event.target.value})
     }
+
     function filterObject(obj) {
         return Object.fromEntries(Object.entries(obj).filter(([key, val]) => val !== ''));
     }
@@ -24,17 +30,24 @@ const CreatePost = () => {
     function tagsToArray(str) {
         return str.split('#').filter(item => item !== '')
     }
+
     const createPostOnClick = async (e) => {
         e.preventDefault()
         try {
             if (form.tags) {
                 form.tags = tagsToArray(form.tags)
             }
+            //TODO load image on server
             const filterForm = filterObject(form)
-            await request('/posts', 'POST', {...filterForm})
+            // const formData = new FormData();
+            // formData.append('title', form.title)
+            // formData.append('content', form.content)
+            //formData.append('title', form.title)
+            console.log(filterForm)
+            await PostService.createPost(filterForm, auth.token)
             navigate('/posts')
         } catch (e) {
-            setError('Данные заполнены не корректно')
+            setError('Данные заполнены некорректно')
             console.log(e.message)
         }
 
@@ -43,10 +56,15 @@ const CreatePost = () => {
 
     return (
         <div className={'container-sm'}>
-            {error? <DangerAlert message={error}/>:null }
-            <div className="mb-3">
-                <label htmlFor="formFileMultiple" className="form-label">Preview image</label>
-                <input className="form-control" type="file" id="formFileMultiple" multiple/>
+            {error ? <DangerAlert message={error}/> : null}
+            <div className="input-group mb-3">
+
+                <input type="file" className="form-control"
+                       id="image"
+                       name="image"
+                       value={form.image}
+                       onChange={changeInputHandler}/>
+                <label className="input-group-text" htmlFor="image">Upload</label>
             </div>
 
             <div className="mb-3">

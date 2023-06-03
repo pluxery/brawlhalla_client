@@ -80,7 +80,7 @@ const ShowPost = () => {
                             <h5>{post.created_at}</h5>
                             <div className="fakeimg">
                                 <img
-                                    src="https://cdn2.unrealengine.com/atla-productart-1920x1080-1920x1080-477cda5a5a30.jpg"
+                                    src = {post.image}
                                     className="card-img-top rounded mx-auto d-block" alt="..."
                                     style={{height: 420, width: 680}}/>
                             </div>

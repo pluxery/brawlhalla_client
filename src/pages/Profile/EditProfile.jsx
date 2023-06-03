@@ -48,6 +48,7 @@ const EditProfile = () => {
     const updateProfile = async (e) => {
         e.preventDefault()
         const result = await UserService.updateProfile(auth.user.id, auth.token, filteredForm(form))
+        console.log(result)
         if (result) {
             setMessage(result.message)
             setVisibleAlert(true)

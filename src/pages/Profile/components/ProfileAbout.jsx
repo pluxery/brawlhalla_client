@@ -30,7 +30,7 @@ const ProfileAbout = () => {
                 </div>
                 :
                 <div>
-                    {user.name}
+                    {!user.about ? "информация отсутсвует" : user.about}
                 </div>}
         </>
     );
