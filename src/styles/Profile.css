@@ -1,5 +1,5 @@
-body{
-    background:#eee;
+body {
+    background: #eee;
 }
 
 .profile-header {
@@ -32,6 +32,17 @@ body{
 .profile-header .profile-header-content {
     color: #fff;
     padding: 25px
+}
+
+.btn-blue-gradient {
+    background: rgb(2,0,36);
+    background: linear-gradient(180deg, rgba(2,0,36,0.8464635854341737) 0%, rgba(0,0,111,1) 100%, rgba(0,212,255,1) 100%);
+    border-color: rgba(0, 0, 0, 0);
+}
+.btn-blue-gradient:hover {
+    background: rgb(2,0,36);
+    background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(16,16,203,1) 100%, rgba(0,212,255,1) 100%);
+    border-color: rgba(0, 0, 0, 0);
 }
 
 .profile-header-img {
@@ -144,7 +155,7 @@ body{
 .t-plus-7,
 .t-plus-8,
 .t-plus-9 {
-    position: relative!important
+    position: relative !important
 }
 
 .profile-header .profile-header-tab {
@@ -158,7 +169,7 @@ body{
 
 .text-ellipsis,
 .text-nowrap {
-    white-space: nowrap!important
+    white-space: nowrap !important
 }
 
 .profile-header .profile-header-tab>li {
@@ -238,7 +249,7 @@ body{
 }
 
 .table.table-profile>thead>tr>th {
-    border-bottom: none!important
+    border-bottom: none !important
 }
 
 .table.table-profile>thead>tr>th h4 {
@@ -275,7 +286,7 @@ body{
 }
 
 .table.table-profile>tbody>tr.divider>td {
-    padding: 0!important;
+    padding: 0 !important;
     height: 10px
 }
 
@@ -383,27 +394,37 @@ body.flat-black {
 }
 
 .bg-white {
-    background-color: #fff!important;
+    background-color: #fff !important;
 }
+
 .p-10 {
-    padding: 10px!important;
+    padding: 10px !important;
 }
+
 .media.media-xs .media-object {
     width: 32px;
 }
+
 .m-b-2 {
-    margin-bottom: 2px!important;
+    margin-bottom: 2px !important;
 }
-.media>.media-left, .media>.pull-left {
+
+.media>.media-left,
+.media>.pull-left {
     padding-right: 15px;
 }
-.media-body, .media-left, .media-right {
+
+.media-body,
+.media-left,
+.media-right {
     display: table-cell;
     vertical-align: top;
 }
+
 select.form-control:not([size]):not([multiple]) {
     height: 34px;
 }
+
 .form-control.input-inline {
     display: inline;
     width: auto;
@@ -637,6 +658,7 @@ select.form-control:not([size]):not([multiple]) {
     line-height: 1.4;
 }
 
-.text-danger, .text-red {
-    color: #ff5b57!important;
+.text-danger,
+.text-red {
+    color: #ff5b57 !important;
 }

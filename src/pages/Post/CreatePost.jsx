@@ -6,6 +6,7 @@ import DangerAlert from "../../components/Alerts/DangerAlert";
 import axios from "axios";
 import PostService from "../../API/PostService";
 import {AuthContext} from "../../context/AuthContext";
+import ObjectUtils from "../../utils/ObjectUtils";
 
 const CreatePost = () => {
     const {request} = useHttp()
@@ -26,18 +27,6 @@ const CreatePost = () => {
         }
     }
 
-    function objectFilter(obj, predicate) {
-        return Object.fromEntries(Object.entries(obj).filter(predicate));
-    }
-
-    function objectToFormData(obj) {
-        const formData = new FormData()
-        for (var key in obj) {
-            formData.append(key, obj[key]);
-        }
-        return formData
-    }
-
     function tagsToArray(str) {
         return str.split('#').filter(item => item !== '')
     }
@@ -48,11 +37,12 @@ const CreatePost = () => {
             if (formInput.tags) {
                 formInput.tags = tagsToArray(formInput.tags)
             }
-            const body = objectToFormData(objectFilter(formInput, function ([key, val]) {
-                return val !== ''
-            }))
+            const body = ObjectUtils.convertToFormData(
+                ObjectUtils.filter(formInput, function ([key, val]) {
+                    return val !== ''
+                }))
             await PostService.createPost(body, auth.token)
-            navigate('/posts')
+            navigate(-1)
         } catch (e) {
             setError('Данные заполнены некорректно')
             console.log(e.message)

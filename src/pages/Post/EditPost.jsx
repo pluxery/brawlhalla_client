@@ -4,6 +4,7 @@ import {API_URI, useHttp} from "../../hooks/http.hook";
 import {useNavigate, useParams} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
 import PostService from '../../API/PostService';
+import ObjectUtils from "../../utils/ObjectUtils";
 
 const EditPost = () => {
     const auth = useContext(AuthContext)
@@ -21,18 +22,6 @@ const EditPost = () => {
         }
     }
 
-    function objectFilter(obj, predicate) {
-        return Object.fromEntries(Object.entries(obj).filter(predicate));
-    }
-
-    function objectToFormData(obj) {
-        const formData = new FormData()
-        for (var key in obj) {
-            formData.append(key, obj[key]);
-        }
-        return formData
-    }
-
     function tagsToArray(str) {
         return str.split('#').filter(item => item !== '')
     }
@@ -47,11 +36,11 @@ const EditPost = () => {
         if (formInput.tags) {
             formInput.tags = tagsToArray(formInput.tags)
         }
-        const body = objectToFormData(objectFilter(formInput, function ([key, val]) {
+        const body = ObjectUtils.convertToFormData(
+            ObjectUtils.filter(formInput, function ([key, val]) {
             return val !== ''
         }))
-        console.log("BODY", ...body)
-        return
+        console.log(...body)
         await PostService.editPostById(post, body, auth.token)
         navigate(`/posts/${post.id}`)
 
@@ -70,17 +59,18 @@ const EditPost = () => {
                 </div>
             </div>
             <div className="mb-3">
-                <input className="form-control" type="file" id="image" name="image"/>
+                <input className="form-control" type="file" id="image" name="image" onChange={changeInputHandler}/>
             </div>
 
             <div className="mb-3">
                 <label htmlFor="exampleFormControlInput1" className="form-label">Название</label>
                 <input type="text"
                        className="form-control"
-                       placeholder="title"
+                       placeholder={post.title}
                        id={'title'}
                        name={'title'}
-                       value={formInput.title ? formInput.title : post?.title}
+
+                       value={formInput.title}
                        onChange={changeInputHandler}/>
             </div>
 
@@ -88,10 +78,10 @@ const EditPost = () => {
                 <label htmlFor="exampleFormControlInput1" className="form-label">Категория</label>
                 <input type="text"
                        className="form-control"
-                       placeholder="Введите категорию"
+                       placeholder={post.category?.name}
                        id={'category'}
                        name={'category'}
-                       value={formInput.category ? formInput.category : post?.category?.name}
+                       value={formInput.category}
                        onChange={changeInputHandler}/>
             </div>
 
@@ -100,10 +90,11 @@ const EditPost = () => {
 
                 <input type="text" className="form-control" id="tags" name={'tags'}
                        onChange={changeInputHandler}
-                       value={formInput.tags ? formInput.tags : post.tags?.map(tag => {
-                           return '#' + tag.name + ' '
+                       value={formInput.tags ? formInput.tags :
+                           post.tags?.map(tag => {
+                            return '#' + tag.name + ' '
                        })}
-                       placeholder="#tag1 #tag2 #tag3"
+                       placeholder={"example input: #tag1 #tag2 #tag3"}
                 />
             </div>
 

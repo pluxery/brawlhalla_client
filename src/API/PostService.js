@@ -44,7 +44,7 @@ export default class PostService {
     static async editPostById(post, body, token) {
         try {
 
-            await axios.patch(`${API_URI}/posts/${post.id}`, {...body}, this._setTokenToHeader(token)
+            await axios.post(`${API_URI}/posts/${post.id}/edit`, body, this._setTokenToHeader(token)
             )
         } catch (e) {
             console.log(e.message)

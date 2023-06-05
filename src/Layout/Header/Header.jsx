@@ -30,7 +30,7 @@ const Header = () => {
         <div className={'header__wrapper'}>
             <div>
                 <NavLink className={'header__link'} to={'/posts'}>Посты</NavLink>
-                <NavLink className={'header__link'} to={'/news'}>Новости</NavLink>
+                {/*<NavLink className={'header__link'} to={'/news'}>Новости</NavLink>*/}
                 <NavLink className={'header__link'} to={'/legends'}>Легенды</NavLink>
                 <NavLink className={'header__link'} to={'/weapons'}>Оружия</NavLink>
                 <NavLink className={'header__link'} to={'/about'}>О Проекте</NavLink>

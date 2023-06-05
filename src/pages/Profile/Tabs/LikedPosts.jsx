@@ -11,6 +11,8 @@ import PostCard from '../../../components/PostCard/PostCard';
 import {NavLink, useParams} from 'react-router-dom';
 import {Button} from "react-bootstrap";
 import AddIcon from "@mui/icons-material/Add";
+import EmptyDataAlert from '../../../components/Alerts/EmptyDataAlert';
+import LoaderCross from "../../../components/Loader/LoaderCross";
 
 const LikedPosts = () => {
     const auth = useContext(AuthContext)
@@ -31,22 +33,20 @@ const LikedPosts = () => {
     return (
         <>
             {isLoading ?
-                <div className="mt-5 text-center">
-                    <div className="spinner-border" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>
-                </div> :
-
-                <div className={'posts__wrapper'}>
-                    {posts.length !== 0 ?
-                        posts.map(item => (
+                <LoaderCross/> :
+                posts.length !== 0 ?
+                    <div className={'posts__wrapper'}>
+                        {posts.map(item => (
                             <PostCard post={item} key={item.id}/>
-                        )) : <h3>Нет постов</h3>}
-                </div>
+                        ))}
+                    </div>
+                    :
+                    <EmptyDataAlert text={id === auth.user.id ? "У вас нет понравившихся постов :(" :
+                        "У пользователя нет понравившихся постов"}/>
+
             }
         </>
-    );
-
+    )
 
 };
 

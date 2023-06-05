@@ -17,6 +17,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const ShowPost = () => {
+
     const auth = useContext(AuthContext)
     const {id} = useParams();
     const [load, setLoad] = useState(true)
@@ -53,7 +54,7 @@ const ShowPost = () => {
 
     const deletePostOnclick = async (e) => {
         await PostService.deletePostById(post.id, auth.token)
-        navigate(`/profile/posts`)
+        navigate(-1)
     }
 
     const addCommentOnClick = async (e) => {
