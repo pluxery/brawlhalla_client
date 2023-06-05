@@ -5,6 +5,7 @@ import {Button} from "react-bootstrap";
 import DangerAlert from "../../components/Alerts/DangerAlert";
 import {useNavigate} from "react-router-dom";
 import {Avatar} from "@mui/material";
+import ObjectUtils from "../../utils/ObjectUtils";
 
 const EditProfile = () => {
 
@@ -25,18 +26,6 @@ const EditProfile = () => {
         }
     }
 
-    function objectFilter(obj, predicate) {
-        return Object.fromEntries(Object.entries(obj).filter(predicate));
-    }
-
-    function objectToFormData(data) {
-        const formData = new FormData()
-        for (var key in data) {
-            formData.append(key, data[key]);
-        }
-        return formData
-    }
-
     const [user, setUser] = useState({
         name: '',
         email: '',
@@ -49,7 +38,7 @@ const EditProfile = () => {
     const [visibleAlert, setVisibleAlert] = useState(false)
     const updateProfile = async (e) => {
         e.preventDefault()
-        const body = objectToFormData(objectFilter(formInput, function ([key, val]) {
+        const body = ObjectUtils.convertToFormData(ObjectUtils.filter(formInput, function ([key, val]) {
             return val !== ''
         }))
         await UserService.updateProfile(auth.user.id, auth.token, body)
@@ -122,11 +111,20 @@ const EditProfile = () => {
             </div>
 
             <div className="input-group mb-3">
+                <div>
+                    <h1>RANK IMAGES AROUND</h1>
+                </div>
+                <input type="range"
+                       className="form-range"
+                       min="750" max="3000" step="10"
+                       id="customRange3"
+                       value={formInput.elo}
+                />
                 <span className="input-group-text">Твой ранг</span>
                 <input type="text" className="form-control"
                        placeholder={user.elo ? user.elo : "от 750 до 3000"}
                        name={'elo'}
-                       value={formInput.elo}
+                       value={formInput.elo }
                        onChange={changeInput}/>
                 <span className="input-group-text">elo</span>
             </div>

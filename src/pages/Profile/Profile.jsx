@@ -79,18 +79,41 @@ const Profile = ({ children }) => {
                                                     aria-hidden="true"></span>
                                                 <MailIcon />
                                                 {" "}загрузка</p>
+
                                             <p className="m-b-10">
+                                                <Avatar
+                                                    src="\Steam_icon_logo.svg.png"
+                                                    sx={{ width: 25, height: 25 }}
+                                                />
+                                                загрузка
                                                 <span
                                                     className="spinner-border spinner-border-sm"
                                                     role="status"
-                                                    aria-hidden="true"></span>
-                                                <PersonAddIcon />
-                                                {" "}загрузка</p>
+                                                    aria-hidden="true"></span></p>
+
                                         </>
                                             : <>
                                                 <h4 className="m-t-10 m-b-5">{user.name}</h4>
                                                 <p className="m-b-10"><MailIcon /> {user.email}</p>
-                                                <p className="m-b-10"><PersonAddIcon /> {user.steam_link}</p>
+                                                <div className="m-b-10">
+
+
+                                                    {user.steam_link ?
+                                                        <>
+
+                                                            <Button
+                                                            className='btn-blue-gradient mb-2'
+                                                            target="_blank"
+                                                             href={`https://steamcommunity.com/profiles/${user.steam_link}`}>
+                                                            <img src="\steam_white_icon.png"
+                                                                    style={{ width: 25, height: 25 }} />
+                                                                {" "}steam профиль
+                                                               
+                                                            </Button>
+
+                                                        </>
+                                                        : null}
+                                                </div>
                                             </>}
                                         {isLoading ? <button className="btn btn-success" type="button" disabled>
                                             <span className="spinner-border spinner-border-sm" role="status"
@@ -98,14 +121,15 @@ const Profile = ({ children }) => {
                                             Loading...
                                         </button> : user.id === auth.user.id ?
                                             <NavLink to={'/profile/edit'} className=" btn btn-success">
-                                                <EditIcon/>
+                                                <EditIcon />
                                                 Редактировать
-                                            </NavLink> : <>
+                                            </NavLink> :
+                                            auth.isAuthenticated ? <>
                                                 {isSubscribed ? <Button className="btn-danger"
                                                     onClick={unsubscriptionOnClick}>Отписаться</Button> :
                                                     <Button className="btn-success"
                                                         onClick={subscriptionOnClick}>Подписаться</Button>}
-                                            </>}
+                                            </> : null}
 
                                     </div>
                                 </div>

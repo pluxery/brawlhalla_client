@@ -13,11 +13,11 @@ import AuthPage from "../pages/Auth/AuthPage";
 import ShowPost from "../pages/Post/ShowPost";
 import Layout from "../Layout/Layout";
 import ShowWeapon from "../pages/Weapon/ShowWeapon";
-import Subscriptions from "../pages/Profile/components/Subscriptions";
-import ProfileAbout from "../pages/Profile/components/ProfileAbout";
-import ProfilePostList from "../pages/Profile/components/ProfilePostList";
+import Subscriptions from "../pages/Profile/Tabs/Subscriptions";
+import ProfileAbout from "../pages/Profile/Tabs/ProfileAbout";
+import ProfilePostList from "../pages/Profile/Tabs/ProfilePostList";
 import React from "react";
-import LikedPosts from "../pages/Profile/components/LikedPosts";
+import LikedPosts from "../pages/Profile/Tabs/LikedPosts";
 import EditProfile from "../pages/Profile/EditProfile";
 import ShowLegend from "../pages/Legend/ShowLegend";
 
@@ -72,6 +72,7 @@ export const useRoutes = (isAuthenticated) => {
                 <Route path={'/posts/search/category/:category'} element={<Layout children={<IndexPost/>}/>}/>
                 <Route path={'/posts/search/author/:author'} element={<Layout children={<IndexPost/>}/>}/>
                 <Route path={'/posts/:id'} element={<Layout children={<ShowPost/>}/>}/>
+                <Route path={'/profile/:id/liked'} element={<Layout children={<Profile children={<LikedPosts/>}/>}/>}/>
 
                 <Route path={'/news'} element={<Layout children={<News/>}/>}/>
 

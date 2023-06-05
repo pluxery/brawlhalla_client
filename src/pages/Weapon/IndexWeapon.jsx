@@ -3,32 +3,45 @@ import WeaponCard from "../../components/WeaponCard/WeaponCard";
 import '../../styles/Weapons.css'
 import {useHttp} from "../../hooks/http.hook";
 import Loader from "../../components/Loader/Loader";
+import LoaderPostCard from "../../components/Loader/LoaderPostCard";
+import SmallCardLoader from "../../components/Loader/SmallCardLoader";
 
 const IndexWeapon = () => {
 
     const [weapons, setWeapons] = useState([]);
     const {request, loading} = useHttp()
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         async function getAllWeapons() {
             return await request('/weapons')
         }
 
-        getAllWeapons().then(r => setWeapons(r.data))
+        getAllWeapons().then(r => {
+            setWeapons(r.data)
+            setIsLoading(false)
+
+        })
+
     }, [request, setWeapons]);
-    if (loading) {
-        return <Loader/>
-    } else {
-        return (<>
-                <h1>Weapons:</h1>
-                <div className={'weapons__wrapper'}>
-                    {weapons.map((item) => {
-                        return <WeaponCard weapon={item} key={item.id}/>;
-                    })}
-                </div>
-            </>
-        );
-    }
+
+    return (
+        <>
+            <h1>Weapons:</h1>
+
+            <div className={'weapons__wrapper'}>
+                {isLoading ?
+                    Array(10).fill(1).map(item => (
+                        <SmallCardLoader/>
+                    )) :
+                    weapons.map((item) => {
+                            return <WeaponCard weapon={item} key={item.id}/>;
+                        }
+                    )
+                }
+            </div>
+        </>
+    );
 };
 
 export default IndexWeapon;

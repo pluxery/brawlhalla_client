@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import SubscriptionCard from "../../../components/SubscriptionCard/SubscriptionCard";
 import UserService from '../../../API/UserService';
+import EmptyDataAlert from "../../../components/Alerts/EmptyDataAlert";
+import LoaderCross from "../../../components/Loader/LoaderCross";
 
 const Subscriptions = () => {
     const {id} = useParams()
@@ -19,17 +21,14 @@ const Subscriptions = () => {
     return (
         <>
             {isLoading ?
-                <div className="mt-5 text-center">
-                    <div className="spinner-border" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>
-                </div>
+                <LoaderCross/>
                 :
                 subscriptions.length !== 0 ?
                     subscriptions.map((item) => {
                         return <SubscriptionCard user={item}/>
                     }) :
-                    <h3>У вас нет подписок</h3>
+
+                    <EmptyDataAlert text={ "Подписки отсутствует"}/>
             }
         </>
     );
