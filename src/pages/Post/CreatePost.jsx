@@ -27,8 +27,8 @@ const CreatePost = () => {
         }
     }
 
-    function tagsToArray(str) {
-        return str.split('#').filter(item => item !== '')
+    function tagsToArray(tags) {
+        return tags.split('#').filter(item => item !== '')
     }
 
     const createPostOnClick = async (e) => {
@@ -37,6 +37,7 @@ const CreatePost = () => {
             if (formInput.tags) {
                 formInput.tags = tagsToArray(formInput.tags)
             }
+
             const body = ObjectUtils.convertToFormData(
                 ObjectUtils.filter(formInput, function ([key, val]) {
                     return val !== ''

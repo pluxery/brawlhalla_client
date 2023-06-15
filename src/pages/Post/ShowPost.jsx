@@ -141,14 +141,30 @@ const ShowPost = () => {
                         {post.author.id === auth.user.id ?
 
                             <div className="card">
-                                <Fab color="error" aria-label="add" onClick={deletePostOnclick}>
-                                    <DeleteIcon/>
-                                </Fab>
-                                <NavLink to={`/posts/${post.id}/edit`}>
-                                    <Fab color="success" aria-label="edit">
-                                        <EditIcon/>
-                                    </Fab>
-                                </NavLink>
+                                <div className="container text-center">
+                                    <div className="row align-items-start">
+                                        <div className="col">
+                                            <Fab color="error" aria-label="delete" onClick={deletePostOnclick}>
+                                                <DeleteIcon/>
+                                            </Fab>
+                                        </div>
+                                        <div className="col">
+                                            <NavLink to={`/posts/${post.id}/edit`}>
+                                                <Fab color="success" aria-label="edit">
+                                                    <EditIcon/>
+                                                </Fab>
+                                            </NavLink>
+                                        </div>
+                                        <div className="col">
+                                            <NavLink to={`/posts/create`}>
+                                                <Fab color ='primary' aria-label="create">
+                                                    <AddIcon/>
+                                                </Fab>
+                                            </NavLink>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div> : null}
 
                         <div className="card">

@@ -8,10 +8,10 @@ const WeaponCard = ({weapon}) => {
 
     return (
 
-        <div className="card">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf36B150vVGbX-oqoie2uW8bssNq8rgFuhGg&usqp=CAU"
+        <div className="card text-center">
+            <img src={weapon.image}
                  className="card-img-top rounded mx-auto d-block" alt="..."
-                 style={{height: "12rem"}}/>
+                 style={{height: "5rem", width: '5rem'}}/>
             <div className="card-body">
                 <h5 className="card-title">{weapon.name}</h5>
             </div>

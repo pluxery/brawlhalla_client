@@ -57,6 +57,27 @@ const EditProfile = () => {
     }, [auth.token, setUser])
 
 
+    function getRankImage(elo) {
+        if (elo < 900) {
+            return '/ranked/900.webp'
+        }
+        if (elo < 1100) {
+            return '/ranked/1100.webp'
+        }
+        if (elo < 1400) {
+            return '/ranked/1400.webp'
+        }
+        if (elo < 1680) {
+            return '/ranked/Gold.webp'
+        }
+        if (elo < 2000) {
+            return '/ranked/Platinum.webp'
+        }
+        if (elo >= 2000) {
+            return '/ranked/Diamond.webp'
+        }
+    }
+
     return (
         <div className={'m-5 container-sm'}>
             {visibleAlert ? <DangerAlert message={message}/> : null}
@@ -65,7 +86,7 @@ const EditProfile = () => {
                 <div className="row justify-content-center">
                     <Avatar alt="Remy Sharp"
                             variant="square"
-                    className='m-3 p-2'
+                            className='m-3 p-2'
                             src={user.avatar}
                             sx={{width: 170, height: 170}}/>
                 </div>
@@ -110,23 +131,28 @@ const EditProfile = () => {
                        onChange={changeInput}/>
             </div>
 
-            <div className="input-group mb-3">
-                <div>
-                    <h1>RANK IMAGES AROUND</h1>
+            <div className="input-group mb-3 col">
+                <div className={'container row text-center col-auto'}>
+                    <img src={getRankImage(formInput.elo)}
+                         style={{width: 110, height: 110, marginBottom: 5}} alt={'not found'}/>
                 </div>
+                <div className={'col'}>
                 <input type="range"
-                       className="form-range"
+                       className="form-range "
                        min="750" max="3000" step="10"
-                       id="customRange3"
+                       id="elo"
+                       name='elo'
                        value={formInput.elo}
-                />
+                       onChange={changeInput}/>
+
                 <span className="input-group-text">Твой ранг</span>
                 <input type="text" className="form-control"
                        placeholder={user.elo ? user.elo : "от 750 до 3000"}
                        name={'elo'}
-                       value={formInput.elo }
+                       value={formInput.elo}
                        onChange={changeInput}/>
-                <span className="input-group-text">elo</span>
+            </div>
+
             </div>
             <div className="input-group">
                 <span className="input-group-text">О себе</span>
@@ -139,7 +165,7 @@ const EditProfile = () => {
             </div>
 
             <Button className={'btn-success mt-3'} onClick={updateProfile}>Редактировать</Button>
-            
+
         </div>
     );
 };

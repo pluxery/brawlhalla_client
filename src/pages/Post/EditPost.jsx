@@ -40,7 +40,6 @@ const EditPost = () => {
             ObjectUtils.filter(formInput, function ([key, val]) {
             return val !== ''
         }))
-        console.log(...body)
         await PostService.editPostById(post, body, auth.token)
         navigate(`/posts/${post.id}`)
 

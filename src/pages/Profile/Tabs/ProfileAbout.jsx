@@ -28,11 +28,14 @@ const ProfileAbout = () => {
             {isLoading ?
                 <LoaderCross/>
                 :
-                <div>
+                <div className={'card'}>
+                    <div className={'card-body'}>
                     {!user.about ?
                         <EmptyDataAlert text={id === auth.user.id ? "Расскажите о себе!" : "Информация отсутствует"}/>
                         : user.about}
-                </div>}
+                    </div>
+                </div>
+            }
         </>
     );
 };
