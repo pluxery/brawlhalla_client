@@ -4,3 +4,30 @@
     gap: 10px;
     grid-auto-rows: minmax(100px, auto);
 }
+.search {
+    flex: 0.3;
+}
+
+.search__input {
+    display: flex;
+    align-items: center;
+    top: 0;
+    background-color: #f5f8fa;
+    padding: 5px;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-left: 20px;
+    border: green 1px solid;
+}
+
+.search__input > input {
+    padding-left: 20px;
+    font-size: 20px;
+    border: none;
+    background-color: #f5f8fa;
+    outline: none;
+    width:  100%;
+}
+.search__icon{
+    color: gray;
+}

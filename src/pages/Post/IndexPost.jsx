@@ -15,6 +15,7 @@ import UnauthorizedAlert from "../../components/Alerts/UnauthorizedAlert";
 import PostService from '../../API/PostService';
 import EditIcon from '@mui/icons-material/Edit';
 import LoaderPostCard from "../../components/Loader/LoaderPostCard";
+import {Search} from "@mui/icons-material";
 
 const IndexPost = () => {
     const [posts, setPosts] = useState([]);
@@ -55,6 +56,13 @@ const IndexPost = () => {
         })
     }, [page, params, setPosts]);
 
+    const [searchText, setSearchText] = useState('')
+
+    const searchedPosts = posts.filter(item => {
+        return item.content.toLowerCase().includes(searchText.toLowerCase())
+            || item.title.toLowerCase().includes(searchText.toLowerCase())
+            || item.description?.toLowerCase().includes(searchText.toLowerCase())
+    })
 
     return (
         <>
@@ -65,14 +73,26 @@ const IndexPost = () => {
                 </NavLink> :
                 <UnauthorizedAlert/>
             }
-            <h1>Последние:</h1>
+            <div className="search">
+                <div
+                    className="search__input">
+                    <Search/>
+                    <input
+                        placeholder="Поиск"
+                        type="text"
+                        onChange={(event) => setSearchText(event.target.value)}
+                    />
+                </div>
+            </div>
+
+            <h3>Последние:</h3>
             {isLoading ?
                 <div className={'posts__wrapper'}>
                     {Array(10).fill(1).map(item => (
                         <LoaderPostCard/>
                     ))}
                 </div>
-                : <PostList posts={posts}/>}
+                : <PostList posts={searchedPosts}/>}
 
             {/*PAGINATOR*/}
             <div className={'container mt-5'}>

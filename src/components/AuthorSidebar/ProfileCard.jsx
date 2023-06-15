@@ -1,14 +1,15 @@
 import React from 'react';
 import {NavLink} from "react-router-dom";
 import {Button} from "react-bootstrap";
+import {Avatar} from "@mui/material";
 
 
 const ProfileCard = ({author}) => {
     return (
-            <div className="card">
+            <div className="card text-center">
                 <h3>{author.name}</h3>
-                <img
-                    src={'https://play-lh.googleusercontent.com/PZeSw1BuUf8swSbIxF3JNE0t-_4My6hbhdnCLucQZgYLrSe0IDaAMi4r83g6drKg2knm'}
+                <Avatar
+                    src={author.avatar}
                     alt={'...'} style={{
                     width: 100, height: 100
                 }}

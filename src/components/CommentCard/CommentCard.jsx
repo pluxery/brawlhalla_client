@@ -8,6 +8,7 @@ import {Button} from "react-bootstrap";
 import {Avatar} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
 const CommentCard = ({comment}) => {
 
     const auth = useContext(AuthContext)
@@ -29,10 +30,10 @@ const CommentCard = ({comment}) => {
         <div className="card">
             <div className="card-header">
 
-                <div className={'row align-items-center justify-content-start'}>
+                <div className={'row '}>
                     <div className={'col-auto'}>
                         <Avatar alt="Remy Sharp"
-                                src="https://play-lh.googleusercontent.com/PZeSw1BuUf8swSbIxF3JNE0t-_4My6hbhdnCLucQZgYLrSe0IDaAMi4r83g6drKg2knm"
+                                src={comment.author.avatar}
                                 sx={{width: 40, height: 40}}/>
                     </div>
 
@@ -42,23 +43,24 @@ const CommentCard = ({comment}) => {
                         </NavLink>
                     </div>
 
-                        <div className="col-auto">
-                            <div className="col-auto me-auto">{comment.created_at}</div>
-                            <div className="col-auto">{
-                                auth.user.id === comment.author.id ?
-                                    <span className={'text-danger'} onClick={deleteCommentOnClick}>
-                            {!isDeleted ?  <DeleteIcon/> : <DeleteForeverIcon/>}
-                        </span> : null}
-                            </div>
+                    <div className="col">
+                        <div className="">{comment.created_at}</div>
+                        <div className="">
                         </div>
                     </div>
 
+                    <div className={'col text-end'}>
+                        {auth.user.id === comment.author.id ?
+                            <span className={'text-danger'} onClick={deleteCommentOnClick}>
+                            {!isDeleted ? <DeleteIcon/> : <DeleteForeverIcon/>}
+                        </span> : null}
 
+                    </div>
+                </div>
 
 
             </div>
             <div className="card-body">
-
                 <p className="card-text">{comment.text}</p>
             </div>
         </div>);
