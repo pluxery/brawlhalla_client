@@ -16,11 +16,15 @@ import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from '@mui/icons-material/Delete';
 
+function CrossLoader() {
+    return null;
+}
+
 const ShowPost = () => {
 
     const auth = useContext(AuthContext)
     const {id} = useParams();
-    const [load, setLoad] = useState(true)
+    const [loading, setLoading] = useState(true)
     const [post, setPost] = useState(
         {
             text: '',
@@ -39,18 +43,29 @@ const ShowPost = () => {
 
     const [form, setForm] = useState({text: null})
 
+    const [countLikes, setCountLikes] = useState(0);
+
     const changeInputHandler = event => {
         setForm({...form, [event.target.name]: event.target.value})
     }
     useEffect(() => {
         PostService.getPostById(id).then(r => {
             setPost(r.data)
-            setIsLiked(post.likes.find(element => element.author.id === auth.user.id))
-            console.log(isLiked)
-            setLoad(false)
+            setLoading(false)
+            setIsLiked(userIsLikedPost(r.data.likes))
+            setCountLikes(r.data.likes.length)
         })
-
     }, [setIsLiked, id, setPost, auth.user.id]);
+
+    function userIsLikedPost(likes) {
+        for (let i = 0; i < likes.length; i++) {
+            // console.log(`i=${i} => ${likes[i].id} === ${auth.user.id}`)
+            if (likes[i].id === auth.user.id) {
+                return true
+            }
+        }
+        return false
+    }
 
     const deletePostOnclick = async (e) => {
         await PostService.deletePostById(post.id, auth.token)
@@ -65,11 +80,12 @@ const ShowPost = () => {
     const toggleLikeOnClick = async (e) => {
         await PostService.toggleLikePost(post.id, auth.token)
         setIsLiked(!isLiked)
+        setCountLikes(isLiked ? countLikes - 1 : countLikes + 1)
     }
 
 
-    if (load) {
-        return <Loader/>
+    if (loading) {
+        return <CrossLoader/>
     } else {
         return (
             <>
@@ -83,7 +99,7 @@ const ShowPost = () => {
                             <h5>{post.created_at}</h5>
                             <div className="fakeimg">
                                 <img
-                                    src={post.image}
+                                    src={!post.image ? '...' : post.image}
                                     className="card-img-top rounded mx-auto d-block" alt="..."
                                     style={{height: 420, width: 680}}/>
                             </div>
@@ -95,7 +111,7 @@ const ShowPost = () => {
                                 auth.isAuthenticated ? <>
                                     <div className="container text-end">
                                         <span onClick={toggleLikeOnClick}>
-                                            <i>{post.likes.length}</i>
+                                            <i>{countLikes}</i>
                                             {isLiked ?
                                                 <Fab disabled aria-label="like" className={"m-2"}>
                                                     <FavoriteIcon sx={{color: pink[500]}}/>
@@ -157,7 +173,7 @@ const ShowPost = () => {
                                         </div>
                                         <div className="col">
                                             <NavLink to={`/posts/create`}>
-                                                <Fab color ='primary' aria-label="create">
+                                                <Fab color='primary' aria-label="create">
                                                     <AddIcon/>
                                                 </Fab>
                                             </NavLink>
