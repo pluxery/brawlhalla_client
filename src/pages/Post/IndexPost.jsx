@@ -85,7 +85,7 @@ const IndexPost = () => {
                 </div>
             </div>
 
-            <h3>Последние:</h3>
+            <h3 className={'mt-2'}>Последние</h3>
             {isLoading ?
                 <div className={'posts__wrapper'}>
                     {Array(10).fill(1).map(item => (

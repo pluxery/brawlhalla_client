@@ -151,10 +151,10 @@ const ShowLegend = () => {
                                 <li className={'list-group-item'}>
                                     <StatItem size={legend.speed} name={'speed'}/>
                                 </li>
-                                <li className={'list-group-item align-content-center'}>
-                                    <span style={{fontWeight:600, fontSize:18}}> {legend.price}</span>
-                                    <AttachMoneyIcon/>
-                                </li>
+                                {/*<li className={'list-group-item align-content-center'}>*/}
+                                {/*    <span style={{fontWeight:600, fontSize:18}}> {legend.price}</span>*/}
+                                {/*    <AttachMoneyIcon/>*/}
+                                {/*</li>*/}
                             </ul>
                         </div>
 
