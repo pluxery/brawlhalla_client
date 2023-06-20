@@ -20,6 +20,7 @@ import React from "react";
 import LikedPosts from "../pages/Profile/Tabs/LikedPosts";
 import EditProfile from "../pages/Profile/EditProfile";
 import ShowLegend from "../pages/Legend/ShowLegend";
+import FavoriteLegends from '../pages/Profile/Tabs/FavoriteLegends';
 
 
 
@@ -34,6 +35,7 @@ export const useRoutes = (isAuthenticated) => {
                 <Route path={'/profile/:id/subscriptions'} element={<Layout children={<Profile children={<Subscriptions/>}/>}/>}/>
                 <Route path={'/profile/:id/about'} element={<Layout children={<Profile children={<ProfileAbout/>}/>}/>}/>
                 <Route path={'/profile/:id/liked'} element={<Layout children={<Profile children={<LikedPosts/>}/>}/>}/>
+                <Route path={'/profile/:id/legends'} element={<Layout children={<Profile children={<FavoriteLegends/>}/>}/>}/>
 
 
 
@@ -67,6 +69,7 @@ export const useRoutes = (isAuthenticated) => {
                 <Route path={'/profile/:id'} element={<Layout children={<Profile children={<ProfilePostList/>}/>}/>}/>
                 <Route path={'/profile/:id/subscriptions'} element={<Layout children={<Profile children={<Subscriptions/>}/>}/>}/>
                 <Route path={'/profile/:id/about'} element={<Layout children={<Profile children={<ProfileAbout/>}/>}/>}/>
+                <Route path={'/profile/:id/legends'} element={<Layout children={<Profile children={<FavoriteLegends/>}/>}/>}/>
 
                 <Route path={'/posts'} element={<Layout children={<IndexPost/>}/>}/>
                 <Route path={'/posts/search/category/:category'} element={<Layout children={<IndexPost/>}/>}/>

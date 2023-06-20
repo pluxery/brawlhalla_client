@@ -5,6 +5,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
 import PostService from '../../API/PostService';
 import ObjectUtils from "../../utils/ObjectUtils";
+import axios from "axios";
 
 const EditPost = () => {
     const auth = useContext(AuthContext)
@@ -21,20 +22,31 @@ const EditPost = () => {
             setFormInput({...formInput, image: event.target.files[0]})
         }
     }
-
+    const [categories, setCategories] = useState([])
     function tagsToArray(str) {
         return str.split('#').filter(item => item !== '')
     }
 
+    function arrayToString(tags) {
+        return tags.arrayToString
+    }
+
     useEffect(() => {
         PostService.getPostById(id).then(r => setPost(r.data))
+        async function getAllCategories() {
+            return await axios.get(`${API_URI}/categories`)
+        }
+
+        getAllCategories().then(r => {
+            setCategories(r.data.data)
+        })
     }, [id, setPost])
 
 
     const editPostOnClick = async (e) => {
         e.preventDefault()
         if (formInput.tags) {
-            formInput.tags = tagsToArray(formInput.tags)
+            formInput.tags = [JSON.stringify(tagsToArray(formInput.tags))]
         }
         const body = ObjectUtils.convertToFormData(
             ObjectUtils.filter(formInput, function ([key, val]) {
@@ -44,6 +56,9 @@ const EditPost = () => {
         navigate(`/posts/${post.id}`)
 
     }
+    const searchedCategories = categories.filter(category => {
+        return category.name.toLowerCase().includes(formInput.category.toLowerCase())
+    })
 
     return (
         <div className={'container-sm'}>
@@ -81,8 +96,24 @@ const EditPost = () => {
                        id={'category'}
                        name={'category'}
                        value={formInput.category}
-                       onChange={changeInputHandler}/>
+                      />
             </div>
+
+            <div className={'mb-3'}>
+                <label htmlFor="exampleFormControlInput1" className="form-label">Выбрать категории</label>
+                <select className="form-select" aria-label="Default select example"
+                        name={'category'}
+                        id={'category'}
+                        onChange={changeInputHandler}>
+                    {categories.map(category => (
+                        <option value={category.name}>
+                            {category.name}
+                        </option>
+                    ))}
+
+                </select>
+            </div>
+           
 
             <div className="mb-3">
                 <label htmlFor="exampleFormControlInput1" className="form-label">Тэги</label>

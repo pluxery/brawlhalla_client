@@ -161,6 +161,14 @@ const Profile = ({ children }) => {
                                         </NavLink>
                                     </li>
 
+                                    
+                                    <li className="nav-item">
+                                        <NavLink className="nav-link_"
+                                            to={`/profile/${user.id}/legends`}>
+                                            Любимые легенды
+                                        </NavLink>
+                                    </li>
+
                                 </ul>
 
                             </div>

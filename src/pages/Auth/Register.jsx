@@ -22,6 +22,7 @@ const Register = () => {
 
 
     const validate = () => {
+        setMessage('')
         if ((form.name.length < 3 || form.email.length < 6 || form.password.length < 6 || form.confirm_password.length < 6)) {
             return false
         }
@@ -40,27 +41,31 @@ const Register = () => {
                 if (!error) {
                     auth.login(data.access_token, data.user)
                     navigate('/posts')
+                }else{
+                    auth.login(data.access_token, data.user)
+                    navigate('/posts')
+                    
+
                 }
             } catch (e) {
                 setMessage("Пользователь с такой почтой уже существует!")
-                console.log(e.message)
             }
         } else {
-
+            setMessage("Данные введены не корректно!")
         }
     }
     return (
 
         <div className={''}>
             <form>
-                <h1 className="start__text">С возвращением!</h1>
+                <h1 className="start__text">Регистрация</h1>
 
                 <span className={'text-danger'}>{message}</span>
 
                 <BhInput name='name'
                          id="name"
                          type={"text"}
-                         placeholder={'username'}
+                         placeholder={'логин (от 3 символов)'}
                          value={form.name}
                          onChange={changeInputHandler}>
                 </BhInput>
@@ -76,7 +81,7 @@ const Register = () => {
                 <BhInput name={'password'}
                          id='password'
                          type={"password"}
-                         placeholder={'password'}
+                         placeholder={'пароль (от 6 символов)'}
                          value={form.password}
                          onChange={changeInputHandler}>
                 </BhInput>
@@ -84,7 +89,7 @@ const Register = () => {
                 <BhInput name={'confirm_password'}
                          id='confirm_password'
                          type={"password"}
-                         placeholder={'confirm password'}
+                         placeholder={'повторите пароль'}
                          value={form.confirm_password}
                          onChange={changeInputHandler}>
                 </BhInput>

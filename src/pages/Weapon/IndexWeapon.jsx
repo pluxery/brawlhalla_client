@@ -27,7 +27,7 @@ const IndexWeapon = () => {
 
     return (
         <>
-            <h1>Weapons:</h1>
+            <h1>Оружия:</h1>
 
             <div className={'weapons__wrapper'}>
                 {isLoading ?
