@@ -11,7 +11,6 @@ const PostCard = ({post}) => {
     const linkStyle ={color: "black", textDecoration: "none"}
     return (
         <div className="card">
-
             <div className={'text-start'}>
                 <NavLink to={`/posts/search/author/${post.author.id}`} style={linkStyle}>
                     <PersonOutlineIcon sx={{color: grey[700], fontSize: 18}}/>

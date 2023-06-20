@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
-import {useHttp} from "../../hooks/http.hook";
+import React, { useEffect, useState } from 'react';
+import { useParams } from "react-router-dom";
+import { useHttp } from "../../hooks/http.hook";
 import Loader from "../../components/Loader/Loader";
 import LoaderCross from "../../components/Loader/LoaderCross";
-
+import RipAlert from '../../components/Alerts/RipAlert';
 const ShowWeapon = () => {
-    const {id} = useParams()
-    const {request} = useHttp()
+    const { id } = useParams()
+    const { request } = useHttp()
     const [weapon, setWeapon] = useState({})
     const [loading, setLoading] = useState(true)
     useEffect(() => {
@@ -21,12 +21,11 @@ const ShowWeapon = () => {
     }, [id, request])
 
     if (loading) {
-        return <LoaderCross/>
+        return <LoaderCross />
     } else {
         return (
-            <div>
-                <h1>Show legends with this weapon</h1>
-            </div>
+                <RipAlert text={"Coming soon!"} />
+
         );
     }
 };

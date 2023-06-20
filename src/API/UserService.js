@@ -28,6 +28,25 @@ export default class UserService {
         }
 
     }
+    static async toggleFavorite(id, token) {
+        try {
+            const { data } = await axios.get(`${API_URI}/legends/${id}/toggle_favorite`,
+            this._setTokenToHeader(token))
+            return data
+        } catch (e) { }
+    }
+
+
+    static async getFavoriteLegends(id){
+        try{
+            const {data}  = await axios.get(`${API_URI}/users/${id}/favorite_legends`)
+            return data
+
+        }catch (e) {
+            console.log(e.message)
+        }
+
+    }
 
     static async getUserById(id, token) {
         try {

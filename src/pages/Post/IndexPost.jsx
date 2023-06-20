@@ -16,6 +16,7 @@ import PostService from '../../API/PostService';
 import EditIcon from '@mui/icons-material/Edit';
 import LoaderPostCard from "../../components/Loader/LoaderPostCard";
 import {Search} from "@mui/icons-material";
+import EmptyDataAlert from '../../components/Alerts/EmptyDataAlert';
 
 const IndexPost = () => {
     const [posts, setPosts] = useState([]);
@@ -25,7 +26,7 @@ const IndexPost = () => {
     const params = useParams()
     const [page, setPage] = useState(1)
 
-    function buildQuerySearch() {
+    function buildQuerySearchForAPI() {
         let query = ''
         if (params.tag) {
             query = `&tag=${params.tag}`
@@ -49,7 +50,7 @@ const IndexPost = () => {
 
 
     useEffect(() => {
-        PostService.getAllPosts(page, buildQuerySearch()).then(r => {
+        PostService.getAllPosts(page, buildQuerySearchForAPI()).then(r => {
             setPosts(r.data)
             setPaginator(r.meta)
             setIsLoading(false)
@@ -92,7 +93,8 @@ const IndexPost = () => {
                         <LoaderPostCard/>
                     ))}
                 </div>
-                : <PostList posts={searchedPosts}/>}
+                : searchedPosts.length >0?  <PostList posts={searchedPosts}/> : <EmptyDataAlert text={"Постов не найдено :("}/>}
+
 
             {/*PAGINATOR*/}
             <div className={'container mt-5'}>
