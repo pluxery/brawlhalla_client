@@ -16,10 +16,10 @@ const WeaponCard = ({weapon}) => {
                 <h5 className="card-title">{weapon.name}</h5>
             </div>
 
-            <NavLink to={`/weapons/${weapon.id}`}
+            {/* <NavLink to={`/weapons/${weapon.id}`}
                      className="btn btn-success btn-sm btn-block">
                 Посмотреть
-            </NavLink>
+            </NavLink> */}
         </div>
     );
 };

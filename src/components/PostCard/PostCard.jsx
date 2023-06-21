@@ -18,8 +18,8 @@ const PostCard = ({post}) => {
                 </NavLink>
             </div>
             <img src={post.image}
-                 className="card-img-top rounded mx-auto d-block" alt="..."
-                 style={{height: "12rem"}}/>
+                 className="card-img-top rounded  d-block" alt="..."
+                 style={{height: "auto",width:"auto"}}/>
             <div className="card-body">
                 <h5 className="card-title">{post.title}</h5>
                 {post.category ?

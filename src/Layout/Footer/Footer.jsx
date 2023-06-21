@@ -3,34 +3,20 @@ import './Footer.css'
 
 const Footer = () => {
     return (
-        <>
-            <div className="dummy_page">
-            
-            </div>
-            <div className="footer">
+        <div className='mt-5 row align-items-end'>
+            <div className="footer col">
                 <div className="contain">
                     <div className="col">
-                        <h1>Company</h1>
+                        <h1>Social</h1>
                         <ul>
-                            <li>About</li>
-                            <li>Mission</li>
-                            <li>Services</li>
-                            <li>Social</li>
-                            <li>Get in touch</li>
+                            <li>VK</li>
+                            <li>Youtube</li>
+                            <li>Steam</li>
+                            <li>Telegram</li>
                         </ul>
                     </div>
                     <div className="col">
                         <h1>Products</h1>
-                        <ul>
-                            <li>About</li>
-                            <li>Mission</li>
-                            <li>Services</li>
-                            <li>Social</li>
-                            <li>Get in touch</li>
-                        </ul>
-                    </div>
-                    <div className="col">
-                        <h1>Accounts</h1>
                         <ul>
                             <li>About</li>
                             <li>Mission</li>
@@ -58,14 +44,10 @@ const Footer = () => {
                             <li>Open ticket</li>
                         </ul>
                     </div>
-                    <div className="col social">
-                        <h1>Social</h1>
-
-                    </div>
                     <div className="clearfix"></div>
                 </div>
             </div>
-        </>
+        </div>
 
     );
 };

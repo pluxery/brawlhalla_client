@@ -33,7 +33,7 @@ const Header = () => {
                 {/*<NavLink className={'header__link'} to={'/news'}>Новости</NavLink>*/}
                 <NavLink className={'header__link'} to={'/legends'}>Легенды</NavLink>
                 <NavLink className={'header__link'} to={'/weapons'}>Оружия</NavLink>
-                <NavLink className={'header__link'} to={'/about'}>О Проекте</NavLink>
+                <NavLink className={'header__link'} to={'/about'}>Об игре</NavLink>
             </div>
 
 

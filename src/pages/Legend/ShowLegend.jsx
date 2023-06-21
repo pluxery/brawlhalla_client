@@ -42,6 +42,7 @@ const ShowLegend = () => {
     const setRatingOnClick = async (e) => {
         // console.log(`legend id = ${legend.id}\nsending data\n${form.rating}`)
         const data = await LegendService.setRating(legend.id, form, auth.token)
+        setOpen(false)
     }
     const togleFavoriteLegend = async () => {
         await UserService.toggleFavorite(legend.id, auth.token)
@@ -78,16 +79,11 @@ const ShowLegend = () => {
                         setIsFavorite(userIsSetLegend(r.data, leg.id))
                         setLoading(false)
                     })
-            }else{
+            } else {
                 setLoading(false)
             }
 
         })
-
-
-
-
-
 
     }, [id, setLegend, setIsFavorite])
 
@@ -109,11 +105,12 @@ const ShowLegend = () => {
                 <div className="row align-items-start">
                     <div className="col text-center">
                         <div className="row justify-content-center">
-                            <Avatar alt="Remy Sharp"
+                            <img alt="Remy Sharp"
                                 variant="square"
                                 className='m-3 p-2'
                                 src={legend.main_image}
-                                sx={{ width: 230, height: 230 }} />
+                                style={{ height: 230, width: "auto" }}
+                            />
                         </div>
                         <h3>{legend.name}</h3>
                         <div className={'card'}>
@@ -121,7 +118,7 @@ const ShowLegend = () => {
                                 <h4>Рейтинг пользователей</h4>
                                 <RatingStarsCard rating={legend.rating} />
 
-                                <p onClick={handleOpen}>Оценить</p>
+                                {auth.isAuthenticated ? <p onClick={handleOpen}>Оценить</p> : null}
                                 {auth.isAuthenticated ?
                                     !isFavorite ?
                                         <Button className='btn-success'
