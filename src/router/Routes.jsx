@@ -22,7 +22,7 @@ import EditProfile from "../pages/Profile/EditProfile";
 import ShowLegend from "../pages/Legend/ShowLegend";
 import FavoriteLegends from '../pages/Profile/Tabs/FavoriteLegends';
 import Tutorial from "../pages/Tutorial";
-import Welcome from "../pages/Welcome";
+import Welcome from "../pages/Welcome/Welcome";
 
 
 export const useRoutes = (isAuthenticated) => {
