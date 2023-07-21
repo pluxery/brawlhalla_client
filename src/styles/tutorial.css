@@ -1,0 +1,11 @@
+.tutorial__wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    grid-auto-rows: minmax(20px, auto);
+    font-family: 'Courier New';
+}
+
+.main__text{
+    font-family: 'Courier New';
+}

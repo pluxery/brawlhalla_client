@@ -40,10 +40,10 @@ const Register = () => {
                 const data =  await request('/auth/register', 'POST', {...form})
                 if (!error) {
                     auth.login(data.access_token, data.user)
-                    navigate('/posts')
+                    navigate('/welcome')
                 }else{
                     auth.login(data.access_token, data.user)
-                    navigate('/posts')
+                    navigate('/welcome')
                     
 
                 }
