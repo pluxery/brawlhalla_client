@@ -5,6 +5,8 @@ import {NavLink} from "react-router-dom";
 import {Button} from 'react-bootstrap';
 import UserService from "../../API/UserService";
 import {Avatar} from "@mui/material";
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import {pink, yellow, orange, grey, green,} from "@mui/material/colors";
 
 
 const Header = () => {
@@ -21,22 +23,28 @@ const Header = () => {
             UserService.getUserById(auth.user.id, auth.token)
                 .then(r => {
                     setUser(r.data.data)
+
                     setIsLoading(false)
                 }).catch((e) => console.log(e.message));
         }
     }, [auth])
 
     return (<>
-        <div className={'header__wrapper'}>
+        <div className={'header__wrapper '}>
             <div>
                 <NavLink className={'header__link'} to={'/posts'}>Посты</NavLink>
                 {/*<NavLink className={'header__link'} to={'/news'}>Новости</NavLink>*/}
                 <NavLink className={'header__link'} to={'/legends'}>Легенды</NavLink>
                 <NavLink className={'header__link'} to={'/weapons'}>Оружия</NavLink>
+                <NavLink className={'header__link'} to={'/tutorial'}>Обучение</NavLink>
                 <NavLink className={'header__link'} to={'/about'}>Об игре</NavLink>
             </div>
-
-
+            <div className="form-check form-switch">
+                <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"/>
+                <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
+                    <Brightness4Icon sx={{color: green[50]}}/>
+                </label>
+            </div>
             <div className="container-auto text-end">
                 <div className="row align-items-center justify-content-end">
                     <div className="col-auto">
@@ -47,29 +55,29 @@ const Header = () => {
                     </div>
                     <div className="col-auto">
                         {auth.isAuthenticated ?
-                            isLoading?<span
+                            isLoading ? <span
                                     className="spinner-border spinner-border-lg text-white"
                                     role="status"
-                                    aria-hidden="true"></span>:
+                                    aria-hidden="true"></span> :
 
-                            <Avatar alt="Remy Sharp"
-                                    src={user.avatar}
-                                    sx={{width: 40, height: 40}}/>
+                                <Avatar alt="Remy Sharp"
+                                        src={user.avatar}
+                                        sx={{width: 40, height: 40}}/>
                             : null}
                     </div>
                     <div className="col-auto">
                         <NavLink to={'/'}>
                             {auth.isAuthenticated ?
-                                isLoading?
+                                isLoading ?
                                     <button className="btn btn-success" type="button" disabled>
                                             <span className="spinner-border spinner-border-sm" role="status"
                                                   aria-hidden="true"></span>Loading...
                                     </button> :
-                                <Button className={'btn-danger'} onClick={logoutOnClick}>Выйти</Button>
+                                    <Button className={'btn-danger'} onClick={logoutOnClick}>Выйти</Button>
                                 : null}
                         </NavLink>
-                    </div>
 
+                    </div>
                 </div>
             </div>
         </div>

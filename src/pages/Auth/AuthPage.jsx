@@ -25,7 +25,7 @@ const AuthPage = () => {
                         </button>
                     </div>
 
-                    <NavLink to={'/posts'} className={"start__link"}>
+                    <NavLink to={'/welcome'} className={"start__link"}>
                         Продолжить как гость <AccountBoxIcon/>
                     </NavLink>
                 </div>

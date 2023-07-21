@@ -28,7 +28,7 @@ const Login = () => {
                 const data = await request('/auth/login', 'POST', {...form})
                 if (!error) {
                     auth.login(data.access_token, data.user)
-                    navigate('/posts')
+                    navigate('/welcome')
                 }
             } catch (e) {
                 setMessage(error)
