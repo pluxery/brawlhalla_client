@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  brawlhalla_web:
+    container_name: brawlhalla_frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
